@@ -659,11 +659,15 @@ account.getBalance() // 1234
 createAccount(1234, 42).getBalance === account.getBalance // true
 ```
 
-| Syntax    | Invocation  | `this` |
-| --------: | ----------- | :----: |
-| `f()`     | function    | `undefined` |
-| `obj.f()` | method      | `obj` |
-| `new F()` | constructor | `{ __proto__: F.prototype }` |
+| Function call syntax      | `this`      |
+| ------------------------- | :---------: |
+| `f(x, y, z)`              | `undefined` |
+| `obj.f(x, y, z)`          | `obj`       |
+| `new F(x, y, z)`          | `{ __proto__: F.prototype }` |
+| `f.apply(obj, [x, y, z])` | `obj`       |
+| `f.call(obj, x, y, z)`    | `obj`       |
+| `f.bind(obj)(x, y, z)`    | `obj`       |
+
 
 &nbsp;
 
