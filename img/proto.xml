@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
-<ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20181009150059" modified="D:20181011115753"/>
+<ipe version="70216" creator="Ipe 7.2.17">
+<info created="D:20181009150059" modified="D:20210206204623"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -332,8 +332,8 @@ h
 </path>
 <text matrix="1 0 0 1 272 -232" transformations="translations" pos="160 752" stroke="black" type="label" width="64.204" height="7.473" depth="2.49" halign="center" valign="baseline">new Account()</text>
 <text matrix="1 0 0 1 272 -240" transformations="translations" pos="160 736" stroke="black" type="label" width="37.62" height="6.135" depth="1.93" halign="center" valign="baseline">\_\_proto\_\_</text>
-<text matrix="1 0 0 1 272 -256" transformations="translations" pos="160 736" stroke="black" type="label" width="32.655" height="6.918" depth="0" halign="center" valign="baseline">balance</text>
-<text matrix="1 0 0 1 272 -272" transformations="translations" pos="160 736" stroke="black" type="label" width="8.302" height="6.918" depth="0" halign="center" valign="baseline">id</text>
+<text matrix="1 0 0 1 272 -264" transformations="translations" pos="160 736" stroke="black" type="label" width="32.655" height="6.918" depth="0" halign="center" valign="baseline">balance</text>
+<text matrix="1 0 0 1 272 -280" transformations="translations" pos="160 736" stroke="black" type="label" width="8.302" height="6.918" depth="0" halign="center" valign="baseline">id</text>
 <path stroke="black" arrow="normal/normal">
 408 628 m
 320 628 l
@@ -344,8 +344,7 @@ h
 176 672
 112 636 c
 </path>
-<text matrix="1 0 0 1 272 -144" transformations="translations" pos="160 736" stroke="black" type="label" width="31.327" height="6.926" depth="1.93" halign="center" valign="baseline">deposit</text>
-<text matrix="1 0 0 1 272 -160" transformations="translations" pos="160 736" stroke="black" type="label" width="47.461" height="6.926" depth="1.93" halign="center" valign="baseline">getBalance</text>
+<text matrix="1 0 0 1 272 -152" transformations="translations" pos="160 736" stroke="black" type="label" width="31.327" height="6.926" depth="1.93" halign="center" valign="baseline">deposit</text>
 <path matrix="1 0 0 1 48 0" stroke="black" arrow="normal/normal">
 88 732 m
 100 696
@@ -386,5 +385,8 @@ h
 432 536
 416 576 c
 </path>
+<text matrix="1 0 0 1 -48 -152" transformations="translations" pos="160 736" stroke="black" type="label" width="19.372" height="6.918" depth="0" halign="center" valign="baseline">bind</text>
+<text matrix="1 0 0 1 112 -24" transformations="translations" pos="160 736" stroke="black" type="label" width="24.658" height="6.918" depth="0" halign="center" valign="baseline">freeze</text>
+<text matrix="1 0 0 1 112 -152" transformations="translations" pos="160 736" stroke="black" type="label" width="35.45" height="6.815" depth="1.93" halign="center" valign="baseline">toString</text>
 </page>
 </ipe>
