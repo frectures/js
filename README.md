@@ -579,20 +579,22 @@ function fibonacciSequence() {
 const inventor = { surname: "Eich", forename: "Brendan" };
 
 // lookup properties
-inventor["surname"] // 'Eich'
-inventor.forename   // 'Brendan'
+inventor.forename    // 'Brendan'
+let key = "surname";
+inventor[key]        // 'Eich'
 
 // add properties
-inventor["age"] = 59;             // { surname: 'Eich', forename: 'Brendan', age: 59 }
-inventor.language = "JavaScript"; // { surname: 'Eich', forename: 'Brendan', age: 59, language: 'JavaScript' }
+inventor.age = 59;            // { surname: 'Eich', forename: 'Brendan', age: 59 }
+key = "language";
+inventor[key] = "JavaScript"; // { surname: 'Eich', forename: 'Brendan', age: 59, language: 'JavaScript' }
 
 // remove property
-delete inventor.forename;         // { surname: 'Eich', age: 59, language: 'JavaScript' }
+delete inventor.forename;     // { surname: 'Eich', age: 59, language: 'JavaScript' }
 ```
 
-* JavaScript objects are essentially hash maps with `string` keys
-* Quotation marks around keys in object literals are mostly optional
-* Properties are accessed via brackets or dot syntax
+* JavaScript objects are essentially `java.util.HashMap<String, Object>`
+* Quotation marks around keys in object literals are optional
+* Properties are accessed directly after dot, or indirectly inside brackets
 * Objects are class-free, properties can be added and removed at will
 
 ### Factory functions
