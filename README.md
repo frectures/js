@@ -53,6 +53,16 @@ System.out.println("II. 1 µs later");
   * A single call stack for JavaScript functions
   * JavaScript functions are never interrupted
   * Long-running functions freeze the UI
+  * Infinite loops block everything:
+```js
+setTimeout(() => {
+    // You will never see this message:
+    console.log("A miracle!");
+}, 0);
+while (true) {
+    // because control flow is stuck in an infinite loop.
+}
+```
 * Significantly reduced language complexity
   * Absence of "memory model" (regulates inter-thread memory visibility)
   * Race conditions and deadlocks are non-issues
