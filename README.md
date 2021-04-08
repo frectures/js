@@ -472,14 +472,28 @@ fix(Math.sqrt, 0.5) // 0.9999999999999999
 ### Closures
 
 ```js
-function addCurried(a) {
-    return function (b) {
-        return a + b;
+let hello = function (user) {
+    return "Hello, " + user + "!";
+};
+
+hello("Fred") // "Hello, Fred!"
+
+
+let goodbye = function (user) {
+    return "Goodbye, " + user + "!";
+};
+
+goodbye("Fred") // "Goodbye, Fred!"
+
+
+function greet(prompt) {
+    return function (user) {
+        return prompt + ", " + user + "!";
     };
 }
 
-const increment = addCurried(1);
-increment(99)
+hello = greet("Hello");
+goodbye = greet("Goodbye");
 ```
 
 * Functions have access to their surrounding context
