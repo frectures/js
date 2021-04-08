@@ -419,8 +419,39 @@ function geometricMean(x, y) {
 ### Higher-order functions
 
 ```js
+function fixCos() {
+    let x = 0;
+    let y = Math.cos(x);
+
+    while (y !== x) {
+        console.log(x);
+        x = y;
+        y = Math.cos(x);
+    }
+    return x;
+}
+
+fixCos() // 0.7390851332151607
+
+
+function fixSqrt() {
+    let x = 0.5;
+    let y = Math.sqrt(x);
+
+    while (y !== x) {
+        console.log(x);
+        x = y;
+        y = Math.sqrt(x);
+    }
+    return x;
+}
+
+fixSqrt() // 0.9999999999999999
+
+
 function fix(f, x) {
     let y = f(x);
+
     while (y !== x) {
         console.log(x);
         x = y;
@@ -429,7 +460,8 @@ function fix(f, x) {
     return x;
 }
 
-fix(Math.cos, 0)
+fix(Math.cos,  0)   // 0.7390851332151607
+fix(Math.sqrt, 0.5) // 0.9999999999999999
 ```
 
 * Functions are first class, hence functions can be:
