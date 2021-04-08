@@ -678,6 +678,7 @@ function Account(initialBalance, accountId) {
     };
 }
 
+             // Account.call({}, 1000, 42)
 const account = new Account(1000, 42);
 // Account { balance: 1000, id: 42, deposit: [Function (anonymous)], getBalance: [Function (anonymous)] }
 account.deposit(234);
@@ -692,7 +693,6 @@ createAccount(1234, 42).getBalance === account.getBalance // false
 
 ```js
 function Account(initialBalance, accountId) {
-    // this.__proto__ = Account.prototype;
     this.balance = initialBalance;
     this.id = accountId;
 }
@@ -707,6 +707,7 @@ Account.prototype.getBalance = function () {
     return this.balance;
 };
 
+              // Account.call({ __proto__: Account.prototype }, 1000, 42)
 const account = new Account(1000, 42);
 // Account { balance: 1000, id: 42 }
 account.__proto__
@@ -716,6 +717,9 @@ account.getBalance() // 1234
 
 createAccount(1234, 42).getBalance === account.getBalance // true
 ```
+
+* *Every* function has an associated `prototype` property
+  * But it's only useful for constructor functions
 
 | Function call syntax      | `this`      |
 | ------------------------- | :---------: |
