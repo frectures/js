@@ -21,7 +21,7 @@
 ## Asynchronous programming
 
 ```java
-// Java: blocking wait
+// Java: blocking delay
 try {
     System.out.println("I. start");
     Thread.sleep(1000);
@@ -31,7 +31,7 @@ try {
 }
 ```
 ```js
-// JavaScript: non-blocking wait
+// JavaScript: non-blocking delay
 console.log("I. start");
 setTimeout(function () {
     console.log("III. 1 second later");
@@ -52,15 +52,15 @@ System.out.println("II. 1 µs later");
 * The JavaScript programming language has no threads
   * A single call stack for JavaScript functions
   * JavaScript functions are never interrupted
-  * Long-running functions freeze the UI
-  * Infinite loops block everything:
+  * Long-running functions freeze the UI temporarily
+  * Infinite loops freeze everything forever:
 ```js
-setTimeout(() => {
-    // You will never see this message:
+setTimeout(function () {
+    // This callback never leaves the queue...
     console.log("A miracle!");
 }, 0);
 while (true) {
-    // because control flow is stuck in an infinite loop.
+    // ...because the stack never becomes empty
 }
 ```
 * Significantly reduced language complexity
@@ -77,8 +77,8 @@ var queue = new LinkedBlockingQueue<Runnable>();
 
 void eventLoop() {
     while (true) {
-        Runnable callback = queue.take(); // BLOCKING dequeue
-        callback.run();                   // BLOCKING call
+        Runnable callback = queue.take(); // BLOCKING
+        callback.run();                   // BLOCKING
 
         DocumentObjectModel.render();
     }
@@ -86,9 +86,9 @@ void eventLoop() {
 
 var threadPool = Executors.newFixedThreadPool(1024);
 
-void setTimeout(Runnable callback, int delay) {
+void setTimeout(Runnable callback, int timeout) {
     threadPool.execute(() -> {
-        Thread.sleep(delay);
+        Thread.sleep(timeout);            // BLOCKING
         queue.put(callback);
     });
 }
@@ -1032,5 +1032,75 @@ function* allDatesIn2020(text) {
     for (const match of text.matchAll(dates)) {
         yield { month: match[1], day: +match[2], year: +match[3] };
     }
+}
+```
+
+## Asynchronous programming revisited
+
+### Callback hell
+
+```js
+function countdown() {
+    console.log(3);
+    setTimeout(function () {
+        console.log(2);
+        setTimeout(function () {
+            console.log(1);
+            setTimeout(function () {
+                console.log("Go!!!");
+            }, 1000);
+        }, 1000);
+    }, 1000);
+}
+```
+
+### Promises (2015)
+
+```js
+function delay(timeout) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, timeout);
+    });
+}
+
+function countdown() {
+    console.log(3);
+    delay(1000).then(function () {
+        console.log(2);
+        return delay(1000);
+    }).then(function () {
+        console.log(1);
+        return delay(1000);
+    }).then(function () {
+        console.log("Go!!!");
+    });
+}
+```
+
+### async/await (2017)
+
+```js
+function delay(timeout) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, timeout);
+    });
+}
+
+async function countdown() {
+    console.log(3);
+    await delay(1000);
+    console.log(2);
+    await delay(1000);
+    console.log(1);
+    await delay(1000);
+    console.log("Go!!!");
+}
+
+async function countdown() {
+    for (let i = 3; i >= 1; --i) {
+        console.log(i);
+        await delay(1000);
+    }
+    console.log("Go!!!");
 }
 ```
