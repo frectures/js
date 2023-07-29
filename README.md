@@ -335,32 +335,6 @@ const g = function (x, y) {
 - Extra arguments are ignored
 - Implicit `return undefined;` at the bottom
 
-### Generator functions
-
-```js
-function* fibonacciSequence() {
-    let a = 0n;
-    yield a;
-
-    let b = BigInt(1);
-    yield b;
-
-    while (true) {
-        yield a += b;
-        yield b += a;
-    }
-}
-
-for (const fib of fibonacciSequence()) {
-    if (fib >= 1000) break;
-    console.log(fib);   // 0n 1n 1n 2n 3n 5n 8n 13n 21n 34n 55n 89n 144n 233n 377n 610n 987n
-}
-```
-
-- `function*`s are stackless coroutines
-  - Implemented via state machines
-  - Similar to C# [iterator methods](https://learn.microsoft.com/en-us/dotnet/csharp/iterators#enumeration-sources-with-iterator-methods) (`yield return`)
-
 ### Higher-order functions
 
 - Can we extract the essence of `fixCos` and `fixSqrt` into one `fix` function?
@@ -374,46 +348,46 @@ for (const fib of fibonacciSequence()) {
 <td>
 
 ```js
-function* fixCos() {
-    let x = 0.0; //////////////////
-    do {                       ///
-        yield x;              ///
+function fixCos() {
+    let x = 0.0;
+
+    do {
+        // 0
+        // 1
+        // 0.5403023058681397
+        console.log(x);
+        // 0.7390851332151608
+        // 0.7390851332151606
+        // 0.7390851332151607
     } while (x !== (x = Math.cos(x)));
+
+    return x;
 }
 
-for (const x of fixCos()) {
-    console.log(x);
-    // 0
-    // 1
-    // 0.5403023058681397
-    // ...
-    // 0.7390851332151608
-    // 0.7390851332151606
-    // 0.7390851332151607
-}
+fixCos();
 ```
 
 </td>
 <td>
 
 ```js
-function* fixSqrt() {
-    let x = 0.5; ///////////////////
-    do {                       ////
-        yield x;              ////
+function fixSqrt() {
+    let x = 0.5;
+
+    do {
+        // 0.5
+        // 0.7071067811865476
+        // 0.8408964152537146
+        console.log(x);
+        // 0.9999999999999997
+        // 0.9999999999999998
+        // 0.9999999999999999
     } while (x !== (x = Math.sqrt(x)));
+
+    return x;
 }
 
-for (const x of fixSqrt()) {
-    console.log(x);
-    // 0.5
-    // 0.7071067811865476
-    // 0.8408964152537146
-    // ...
-    // 0.9999999999999997
-    // 0.9999999999999998
-    // 0.9999999999999999                
-}
+fixSqrt();
 ```
 
 </td>
@@ -423,19 +397,17 @@ for (const x of fixSqrt()) {
 - Yes, by abstracting over `f` and `x`:
 
 ```js
-function* fix(f, x) {
+function fix(f, x) {
     do {
-        yield x;
+        console.log(x);
     } while (x !== (x = f(x)));
+
+    return x;
 }
-                          /////////
-for (const x of fix(Math.cos,  0.0)) {
-    console.log(x);
-}
-                          /////////
-for (const x of fix(Math.sqrt, 0.5)) {
-    console.log(x);
-}
+
+fix(Math.cos, 0.0);
+
+fix(Math.sqrt, 0.5);
 ```
 
 - Functions are first class, hence functions can be:
@@ -475,9 +447,7 @@ function makeCounter() {
 - Great fit as arguments to higher-order functions:
 
 ```js
-for (const x of fix(x => Math.pow(x, 0.5), 0.5)) {
-    console.log(x);
-}
+fix(x => Math.pow(x, 0.5), 0.5);
 ```
 
 - JavaScript hipsters prefer arrow functions everywhere:
