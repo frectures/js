@@ -1,3 +1,8 @@
+<style>
+img {
+    background: white;
+}
+</style>
 ## Asynchronous programming
 
 **Quiz note:** Angular developers unfamiliar with<br>
