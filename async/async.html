@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- link rel="stylesheet" href="pretty.css" -->
+<!-- script type="text/javascript" src="bundle.js"></script -->
+</head>
+<body>
+
+<div style="display: flex">
+    <input type="text" id="input" style="flex: 0px" placeholder="Feel free to type here during asynchronous countdown and download!">
+</div>
+<hr>
+<div style="display: flex">
+    <textarea id="output" style="flex: 0px" rows="50"></textarea>
+</div>
+
+</body>
+<script type="text/javascript">
+
+document.getElementById("input").focus();
+document.getElementById("output").value = "download markdown in 6...";
+
+//////////// 1995 Callback parameters ////////////
+
+setTimeout(function () {
+    document.getElementById("output").value = "download markdown in 5...";
+    setTimeout(function () {
+        document.getElementById("output").value = "download markdown in 4...";
+    }, 1000);
+}, 1000);
+
+//////////// 2015 Promise results ////////////
+
+function delay(timeout) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, timeout);
+    });
+}
+
+delay(3000).then(function () {
+    document.getElementById("output").value = "download markdown in 3...";
+    return delay(1000);
+})
+.then(function () {
+    document.getElementById("output").value = "download markdown in 2...";
+});
+
+//////////// 2017 async/await ////////////
+
+(async function () {
+    await delay(5000);
+    document.getElementById("output").value = "download markdown in 1...";
+    await delay(1000);
+    document.getElementById("output").value = "download markdown NOW!";
+
+    try {
+        let response = await fetch("https://raw.githubusercontent.com/frectures/js/master/README.md");
+        document.getElementById("output").value = "decoding response body";
+        let text = await response.text();
+        document.getElementById("output").value = text;
+    } catch (error) {
+        document.getElementById("output").value = error;
+    }
+})();
+
+</script>
+</html>

@@ -1,0 +1,4 @@
+for x in *.xml; do
+	iperender -svg $x ${x%.xml}.svg
+done
+mv queue.svg ../async/
