@@ -162,32 +162,35 @@ typeof []
 
 ```js
 function f() {
-    // ...             // scope of x
-    {                 //
-        // ...       //
-        var x = 42; //
-        // ...     //
-    }             //
-    // ...       //
+    console.log(x); // undefined
+    {
+        console.log(x); // undefined
+
+        var x = 42;
+
+        console.log(x); // 42
+    }
+    console.log(x); // 42
 }                   
 ```
 
-- Above `var x = 42;` the value of `x` is `undefined`
 - `let` variables have block scope:
 
 ```js
 function f() {
-    // ...
+    console.log(x); // ReferenceError: x is not defined
     {
-        // ...
-        let x = 42; // scope of x
-        // ...     //
+        console.log(x); // ReferenceError: x is not defined
+
+        const x = 42;
+
+        console.log(x); // 42
     }
-    // ...
+    console.log(x); // ReferenceError: x is not defined
 }                   
 ```
 
-- `const` requires initialization and forbids assignment:
+- `const` variables require initialization and forbid assignment:
 
 ```js
 function f() {
@@ -202,6 +205,11 @@ function f() {
     account = new Account(); //   TypeError: Assignment to constant variable
 }
 ```
+
+> **Guideline:**
+> 1. prefer `const` by default
+> 2. use `let` when `const` is too restrictive
+> 3. avoid `var`
 
 ## [Equality](https://stackoverflow.com/a/23465314)
 
