@@ -45,7 +45,7 @@ console.log(Array.from(squares(10)));
 </tr>
 </table>
 
-- Designed and implemented as *LiveScript* over 10 days in 1995 by Brendan Eich at Netscape
+- Designed and implemented as *LiveScript* during 10 days in 1995 by Brendan Eich at Netscape
 - Main influences:
   - Scheme (Functions)
   - Self (Prototypes)
@@ -132,34 +132,20 @@ document.getElementById("output").value = text;
   - `Array`
   - ...
 
-### No `char` type
+> **Exercise**: Evaluate the following expressions in the browser console (F12).  
+> Which results do you find surprising?
 
 ```js
-＞"hi"[0]
-'h'
-
-＞"hi".charAt(0)
-'h'
-
-＞"hi"
-'hi'
-
-
-＞"hi".charCodeAt(0)
-104
-
-＞"hi".codePointAt(0)
-104
-
-
-＞"😱".charCodeAt(0)  // UTF-16  code unit  (0..65535)
-55357
-
-＞"😱".charCodeAt(1)  // UTF-16  code unit  (0..65535)
-56881
-
-＞"😱".codePointAt(0) // Unicode code point (0..1114111)
-128561
+typeof false
+typeof 3.14
+typeof 123n
+typeof "hello"
+typeof "hello"[0]
+typeof undefined
+typeof null
+typeof {}
+typeof Math.log
+typeof []
 ```
 
 ![](img/refactoring.jpg)
@@ -169,22 +155,6 @@ document.getElementById("output").value = text;
 > But the compelling reason for choosing it over Java is that JavaScript isn't wholly centered on classes.
 > There are top-level functions, and use of first-class functions is common.
 > This makes it much easier to show refactoring out of the context of classes.”
-
-### The `typeof` operator
-
-```js
-typeof false      === "boolean"
-typeof 3.14       === "number"
-typeof 123n       === "bigint"
-typeof "hello"    === "string"
-typeof undefined  === "undefined"
-typeof null       === "object"   🤔
-
-typeof {}         === "object"
-typeof Math.log   === "function"
-typeof []         === "object"   🤔
-Array.isArray([]) === true
-```
 
 ## Variables
 
