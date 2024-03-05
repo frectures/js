@@ -293,6 +293,16 @@ do {
 } while (password !== "Simsalabim");
 ```
 
+> **Exercise:**
+> 1. Write a `for` loop that logs all divisors of `42`
+>    - Hint: `dividend % divisor === rest`
+>    - *expected:* 1, 2, 3, 6, 7, 14, 21, 42
+> 2. Start with `x = 27` and write a `while` loop that logs `x` and transforms it once per iteration:
+>    - If `x` is even, divide `x` by 2
+>    - If `x` is odd, multiply `x` by 3 and increment
+>    - Stop the loop when `x` reaches 1
+>    - *expected:* 112 values
+
 ### Exceptions
 
 ```js
