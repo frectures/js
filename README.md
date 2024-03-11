@@ -182,7 +182,7 @@ function f() {
     {
         console.log(x); // ReferenceError: x is not defined
 
-        const x = 42;
+        let x = 42;
 
         console.log(x); // 42
     }
@@ -190,7 +190,7 @@ function f() {
 }                   
 ```
 
-- `const` variables require initialization and forbid assignment:
+- `const` variables require initialization and forbid mutation of the variable:
 
 ```js
 function f() {
