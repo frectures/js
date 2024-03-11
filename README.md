@@ -284,7 +284,7 @@ let x = 1;
 while (x + 1 > x) {
     x *= 2;
 }
-console.log(x + " is the smallest integer without odd successor");
+console.log(`${x} is the smallest integer without odd successor`);
 
 
 let password;
