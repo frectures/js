@@ -791,6 +791,8 @@ primes.pop();        // [ 2, 3, 5, 7 ]
   - Reading from such an index gives `undefined`
   - Writing to such an index grows the array
 
+> **Exercise:** Write a function `divisors(x)` that returns an array containing all divisors of `x`
+
 ### Iteration
 
 ```js
@@ -849,6 +851,8 @@ const sortedByYear     = people.toSorted((a, b) => a.year - b.year);
 
 const sortedBySurename = people.toSorted((a, b) => a.surename.localeCompare(b.surename));
 ```
+
+> **Exercise:** Simplify the function `isPerfectNumber(x)` with the previous function `divisors` and the `reduce` method
 
 ### Polyfills
 
