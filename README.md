@@ -132,7 +132,7 @@ document.getElementById("output").value = text;
   - `Array`
   - ...
 
-> **Exercise**: Evaluate the following expressions in the browser console (F12).  
+> **Exercise:** Evaluate the following expressions in the browser console (F12).  
 > Which results do you find surprising?
 
 ```js
@@ -353,7 +353,7 @@ const g = function (x, y) {
 - Extra arguments are ignored
 - Implicit `return undefined;` at the bottom
 
-> **Exercise**: Write a function `isPerfectNumber(x)`
+> **Exercise:** Write a function `isPerfectNumber(x)`
 > - The divisors of a perfect number add up to twice that number
 > - The first 4 perfect numbers are 6, 28, 496 and 8128
 
@@ -708,7 +708,7 @@ new Account(1234, 42).getBalance === account.getBalance // true
 - *Every* function has an associated `prototype` property
   - But it's only useful for constructor functions
 
-> **Exercise**: Add `withdraw` functions to the 3 previous `Account` examples:
+> **Exercise:** Add `withdraw` functions to the 3 previous `Account` examples:
 > - “Factory functions”
 > - “Object inheritance”
 > - “Constructor functions”
@@ -758,7 +758,7 @@ account.__proto__.deposit               // [Function: deposit]
 account.__proto__.getBalance            // [Function: getBalance]
 ```
 
-> **Exercise**: Convince yourself that “ECMAScript objects are not fundamentally class-based”:
+> **Exercise:** Convince yourself that “ECMAScript objects are not fundamentally class-based”:
 > - Below the `class` definition, add a `withdraw` function to the `Account` prototype
 > - Create an account and delete its `id` property
 > - Create an account and change its `__proto__` property
