@@ -337,14 +337,6 @@ throw function () { };
 
 ![](img/sicpjs.webp)
 
-<table>
-<tr>
-<th>JavaScript</th>
-<th>Java</th>
-</tr>
-<tr>
-<td>
-
 ```js
 function f(x, y) {
     return (x + y) / 2;
@@ -355,28 +347,15 @@ const g = function (x, y) {
 };
 ```
 
-</td>
-<td>
-
-```java
-double f(double x, double y) {
-    return (x + y) / 2;
-}
-
-final DoubleBinaryOperator g = (x, y) -> {
-    return (x + y) / 2;
-};
-```
-
-</td>
-</tr>
-</table>
-
 - `function f` does not prevent accidental reassignment: `f = "😱";`
 - `const g = function` cannot be called above its definition
 - Missing arguments are initialized to `undefined`
 - Extra arguments are ignored
 - Implicit `return undefined;` at the bottom
+
+> **Exercise**: Write a function `isPerfectNumber(x)`
+> - The divisors of a perfect number add up to twice that number
+> - The first 4 perfect numbers are 6, 28, 496 and 8128
 
 ### Higher-order functions
 
@@ -439,14 +418,6 @@ fixSqrt();
 
 - Yes, by abstracting over `f` and `x`:
 
-<table>
-<tr>
-<th>JavaScript</th>
-<th>Java</th>
-</tr>
-<tr>
-<td>
-
 ```js
 function fix(f, x) {
     do {
@@ -460,27 +431,6 @@ fix(Math.cos, 0.0);
 
 fix(Math.sqrt, 0.5);
 ```
-
-</td>
-<td>
-
-```java
-double fix(DoubleUnaryOperator f, double x) {
-    do {
-        System.out.println(x);
-    } while (x != (x = f.applyAsDouble(x)));
-
-    return x;
-}
-
-fix(Math::cos, 0.0);
-
-fix(Math::sqrt, 0.5);
-```
-
-</td>
-</tr>
-</table>
 
 - Functions are first class, hence functions can be:
   - passed as arguments
