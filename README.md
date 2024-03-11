@@ -708,6 +708,11 @@ new Account(1234, 42).getBalance === account.getBalance // true
 - *Every* function has an associated `prototype` property
   - But it's only useful for constructor functions
 
+> **Exercise**: Add `withdraw` functions to the 3 previous `Account` examples:
+> - “Factory functions”
+> - “Object inheritance”
+> - “Constructor functions”
+
 | Function call syntax      | `this`      |
 | ------------------------- | :---------: |
 | `f(x, y, z)`              | `undefined` |
@@ -723,6 +728,10 @@ new Account(1234, 42).getBalance === account.getBalance // true
 ![](img/proto.svg)
 
 ### The `class` keyword
+
+> Even though ECMAScript includes syntax for class definitions,
+> **[ECMAScript objects](https://tc39.es/ecma262/#sec-objects) are not fundamentally class-based**
+> such as those in C++, Smalltalk, or Java
 
 ```js
 class Account {
@@ -749,8 +758,10 @@ account.__proto__.deposit               // [Function: deposit]
 account.__proto__.getBalance            // [Function: getBalance]
 ```
 
-- JavaScript has no runtime notion of classes
-- The `class` keyword merely coats syntactic sugar over the prototype system
+> **Exercise**: Convince yourself that “ECMAScript objects are not fundamentally class-based”:
+> - Below the `class` definition, add a `withdraw` function to the `Account` prototype
+> - Create an account and delete its `id` property
+> - Create an account and change its `__proto__` property
 
 ![](img/array.jpg)
 
