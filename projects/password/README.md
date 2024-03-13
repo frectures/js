@@ -1,0 +1,23 @@
+## Have I been pwned?
+
+- `password` is a very commonly used password
+- Its SHA-1 hash is `5BAA6` `1E4C9B93F3F0682250B6CF8331B7EE68FD8`
+- https://api.pwnedpasswords.com/range/5BAA6 returns lots of lines, including:
+  - `1E4C9B93F3F0682250B6CF8331B7EE68FD8:10382543`
+  - meaning `password` was pwned `10382543` times already!
+- Write a web application where the user can enter a password and learn how often it was pwned
+  - 🥈 text field plus button
+  - 🥇 just the text field
+- The file `index.html` contains scaffolding to get you started, including a `sha1hex` function
+- Useful ingredients:
+  - [input](https://www.w3schools.com/tags/tag_input.asp), [onclick](https://www.w3schools.com/jsref/event_onclick.asp)
+  - [getElementById](https://www.w3schools.com/jsref/met_document_getelementbyid.asp)
+  - [substr](https://www.w3schools.com/jsref/jsref_substr.asp) / [substring](https://www.w3schools.com/jsref/jsref_substring.asp)
+  - [fetch](https://www.w3schools.com/js/js_api_fetch.asp)
+    - Note: `fetch` returns a `Promise<Response>`
+    - You must `await` that `Promise<Response>` to get the `Response`
+    - Your button callback must be an `async function`
+  - [split](https://www.w3schools.com/jsref/jsref_split.asp)
+  - [div](https://www.w3schools.com/tags/tag_div.asp), [innerText](https://www.w3schools.com/jsref/prop_node_innertext.asp)
+- Instead of showing only the result for the most recently entered password, can you show a complete history?
+- What happens (should happen) if the user enters the same passwort multiple times?
