@@ -1,4 +1,4 @@
-# Introduction to JavaScript
+# JavaScript Basics
 
 ## History
 
@@ -338,17 +338,17 @@ throw function () { };
 ![](img/sicpjs.webp)
 
 ```js
-function f(x, y) {
+function average1(x, y) {
     return (x + y) / 2;
 }
 
-const g = function (x, y) {
+const average2 = function (x, y) {
     return (x + y) / 2;
 };
 ```
 
-- `function f` does not prevent accidental reassignment: `f = "😱";`
-- `const g = function` cannot be called above its definition
+- `function average1` does not prevent accidental reassignment: `average1 = "😱";`
+- `const average2 = function` cannot be called above its definition
 - Missing arguments are initialized to `undefined`
 - Extra arguments are ignored
 - Implicit `return undefined;` at the bottom
@@ -430,308 +430,56 @@ function fix(f, x) {
 fix(Math.cos, 0.0);
 
 fix(Math.sqrt, 0.5);
+
+fix(function (x) { return x/2; }, 1.0);
 ```
-
-- Functions are first class, hence functions can be:
-  - passed as arguments
-  - returned as results
-  - stored in properties
-
-### Closures
-
-<table>
-<tr>
-<th>JavaScript</th>
-<th>Kotlin</th>
-<th>C#</th>
-</tr>
-<tr>
-<td>
-
-```js
-function makeCounter() {
-    let next = 1;
-
-    return function () {
-        return next++;
-    };
-}
-
-const counter = makeCounter();
-
-console.log(counter()); // 1
-console.log(counter()); // 2
-console.log(counter()); // 3
-```
-
-</td>
-<td>
-
-```kotlin
-fun makeCounter(): () -> Int {
-    var next = 1
-
-    return fun(): Int {
-        return next++
-    }
-}
-
-val counter = makeCounter()
-
-println(counter()) // 1
-println(counter()) // 2
-println(counter()) // 3
-```
-
-</td>
-<td>
-
-```csharp
-Func<int> makeCounter() {
-    var next = 1;
-
-    return delegate() {
-        return next++;
-    };
-}
-
-var counter = makeCounter();
-
-Console.WriteLine(counter()); // 1
-Console.WriteLine(counter()); // 2
-Console.WriteLine(counter()); // 3
-```
-
-</td>
-</tr>
-</table>
-
-- Functions have access to their surrounding context
-- Even after the enclosing function has returned!
 
 ### Arrow functions
 
-<table>
-<tr>
-<th>JavaScript</th>
-<th>Kotlin</th>
-<th>C#</th>
-</tr>
-<tr>
-<td>
-
 ```js
-function makeCounter() {
-    let next = 1;
+fix((x) => x/2, 1.0);
 
-    return () => next++;
-}
-```
-
-</td>
-<td>
-
-```kotlin
-fun makeCounter(): () -> Int {
-    var next = 1
-
-    return { next++ }
-}
-```
-
-</td>
-<td>
-
-```csharp
-Func<int> makeCounter() {
-    var next = 1;
-
-    return () => next++;
-}
-```
-
-</td>
-</tr>
-</table>
-
-- Great fit as arguments to higher-order functions:
-
-```js
-fix(x => Math.pow(x, 0.5),  0.5);
+fix( x  => x/2, 1.0);
 ```
 
 - JavaScript hipsters prefer arrow functions everywhere:
 
 ```js
-const average = (x, y) => (x + y) / 2;
+const average3 = (x, y) => (x + y) / 2;
 ```
 
 ![](img/chain.jpg)
 
 ## Objects
 
-> Even though ECMAScript includes syntax for class definitions,
-> **[ECMAScript objects](https://tc39.es/ecma262/#sec-objects) are not fundamentally class-based**
-> such as those in C++, Smalltalk, or Java
+- Useful lie for beginners 👶 “JavaScript has 2 kinds of objects”:
+  1. Object literals
+  2. Class objects
+- In reality, there is only 1 kind of object, but the whole truth is quite complicated
+
+### Object literals
 
 - A JavaScript object is essentially a `java.util.LinkedHashMap<String, Object>`
-- Quotation marks around keys in object literals are optional
+- Quotation marks around keys in object literals are optional:
 
 ```js
 // object literal
-const account = { balance: 1000, getBalance: function () { return this.balance; } };
+const inventor = { "forename": "Brendan", surename: "Eich" };
+                   //////////             ////////
 
-// access properties
-account["balance"]   // 1000
-account.balance      // 1000
-account.getBalance   // [Function: getBalance]
-account.getBalance() // 1000
+// reading properties
+inventor.forename    // 'Brendan'
+inventor["surename"] // 'Eich'
 
-// add properties
-account["id"]   = 42;
-account.deposit = function (amount) { this.balance += amount; };
+// writing properties
+inventor["year"]  =  1961;        // { forename: 'Brendan', surename: 'Eich', year: 1961 }
+inventor.language = "JavaScript"; // { forename: 'Brendan', surename: 'Eich', year: 1961, language: 'JavaScript' }
 
-// remove properties
-delete account.id;
+// deleting properties
+delete inventor.forename;         // { surename: 'Eich', year: 1961, language: 'JavaScript' }
 ```
 
-- Properties are accessed:
-  - unquoted after dot, or
-  - quoted inside brackets
-- Objects are class-free
-  - Properties can be added and removed at will
-
-### Factory functions
-
-```js
-function createAccount(initialBalance, accountId) {
-    return {
-        balance: initialBalance,
-        id: accountId,
-
-        deposit: function (amount) {
-            this.balance += amount;
-        },
-
-        getBalance: function () {
-            return this.balance;
-        },
-    };
-}
-
-const account = createAccount(1000, 42);
-// { balance: 1000, id: 42, deposit: [Function: deposit], getBalance: [Function: getBalance] }
-
-account.deposit(234);
-account.getBalance() // 1234
-
-createAccount(1234, 42).getBalance === account.getBalance // false
-```
-
-### Object inheritance
-
-```js
-const accountMethods = {
-    deposit: function (amount) {
-        this.balance += amount;
-    },
-
-    getBalance: function () {
-        return this.balance;
-    },
-};
-
-function createAccount(initialBalance, accountId) {
-    return {
-        __proto__: accountMethods,
-
-        balance: initialBalance,
-        id: accountId,
-    };
-}
-
-const account = createAccount(1000, 42);
-// { balance: 1000, id: 42 }
-
-account.__proto__
-// { deposit: [Function: deposit], getBalance: [Function: getBalance] }
-
-account.deposit(234);
-account.getBalance() // 1234
-
-createAccount(1234, 42).getBalance === account.getBalance // true
-```
-
-- *Read* access `obj.key` starts at `obj` and climbs the inheritance chain:
-  - `obj.key`
-  - `obj.__proto__.key`
-  - `obj.__proto__.__proto__.key`
-  - `obj.__proto__.__proto__.__proto__.key`
-  - etc. until `key` is found (or `__proto__` is `null`)
-- *Write* access `obj.key = value` ignores `obj.__proto__`
-
-### Constructor functions
-
-```js
-function Account(initialBalance, accountId) {
-    this.balance = initialBalance;
-    this.id = accountId;
-}
-
-// Account.prototype = { constructor: Account };
-
-Account.prototype.deposit = function (amount) {
-    this.balance += amount;
-};
-
-Account.prototype.getBalance = function () {
-    return this.balance;
-};
-
-            /* Account.call({ __proto__: Account.prototype },
-                            1000, 42) */
-const account = new Account(1000, 42);
-// Account { balance: 1000, id: 42 }
-
-account.__proto__
-// { deposit: [Function (anonymous)], getBalance: [Function (anonymous)] }
-
-account.deposit(234);
-account.getBalance() // 1234
-
-new Account(1234, 42).getBalance === account.getBalance // true
-```
-
-- By convention, functions starting with an uppercase letter are *constructor functions*
-  - Must be invoked with `new` to create `{ __proto__: F.prototype }`
-  - Otherwise, `this` is `undefined`
-- *Every* function has an associated `prototype` property
-  - But it's only useful for constructor functions
-
-> **Exercise:** Add `withdraw` functions to the 3 previous `Account` examples:
-> - “Factory functions”
-> - “Object inheritance”
-> - “Constructor functions”
-
-| Function call syntax      | `this`      |
-| ------------------------- | :---------: |
-| `f(x, y, z)`              | `undefined` |
-| `obj.f(x, y, z)`          | `obj`       |
-| `new F(x, y, z)`          | `{ __proto__: F.prototype }` |
-| `f.apply(obj, [x, y, z])` | `obj`       |
-| `f.call(obj, x, y, z)`    | `obj`       |
-| `f.bind(obj)(x, y, z)`    | `obj`       |
-
-
-&nbsp;
-
-![](img/proto.svg)
-
-### The `class` keyword
-
-> Even though ECMAScript includes syntax for class definitions,
-> **[ECMAScript objects](https://tc39.es/ecma262/#sec-objects) are not fundamentally class-based**
-> such as those in C++, Smalltalk, or Java
+### Class objects
 
 ```js
 class Account {
@@ -750,18 +498,37 @@ class Account {
 }
 
 const account = new Account(1000, 42);
-// Account { balance: 1000, id: 42 }
 
-account.__proto__                       // {}
-account.__proto__ === Account.prototype // true
-account.__proto__.deposit               // [Function: deposit]
-account.__proto__.getBalance            // [Function: getBalance]
+account.deposit(234);
+account.getBalance() // 1234
 ```
 
-> **Exercise:** Convince yourself that “ECMAScript objects are not fundamentally class-based”:
-> - Below the `class` definition, add a `withdraw` function to the `Account` prototype
-> - Create an account and delete its `id` property
-> - Create an account and change its `__proto__` property
+### A glimmer of truth
+
+> Even though ECMAScript includes syntax for class definitions,
+> **[ECMAScript objects](https://tc39.es/ecma262/#sec-objects) are not fundamentally class-based**
+> such as those in C++, Smalltalk, or Java
+
+```js
+const account = new Account(1000, 42);
+
+// add field
+account.audited = true;
+
+// delete field
+delete account.id;
+
+// substitute method for 1 account object
+account.getBalance = function () { return Math.random(); }
+
+// substitute method for all Account objects, past and future
+Account.prototype.getBalance = function () { return Math.random(); }
+
+// change an object's class after creation
+account.__proto__ = SavingsAccount.prototype;
+```
+
+- The `prototype` system is explained fully in `Advanced.md`
 
 ![](img/array.jpg)
 
@@ -853,22 +620,6 @@ const sortedBySurename = people.toSorted((a, b) => a.surename.localeCompare(b.su
 ```
 
 > **Exercise:** Simplify the function `isPerfectNumber(x)` with the previous function `divisors` and the `reduce` method
-
-### Polyfills
-
-- Not all JavaScript environments provide `toSorted` yet
-- In that case, we can monkey-patch it into the prototype:
-
-```js
-if (Array.prototype.toSorted === undefined) {
-    Array.prototype.toSorted = function (compare) {
-        //            spread operator
-        const copy = [...this];
-        copy.sort(compare);
-        return copy;
-    };
-}
-```
 
 ## Modules
 
