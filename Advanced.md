@@ -3,24 +3,22 @@
 ## Objects
 
 - A JavaScript object is essentially a `java.util.LinkedHashMap<String, Object>`
-- Quotation marks around keys in object literals are optional:
 
 ```js
-// object literal
-const account = { "balance": 1000, getBalance: function () { return this.balance; } };
-                  /////////        //////////
+// Object literal
+const account = { balance: 1000, getBalance: function () { return this.balance; } };
 
-// reading properties
+// read properties
 account["balance"]   // 1000
 account.balance      // 1000
 account.getBalance   // [Function: getBalance]
 account.getBalance() // 1000
 
-// writing properties
+// write properties
 account["id"]   = 42;
 account.deposit = function (amount) { this.balance += amount; };
 
-// deleting properties
+// delete properties
 delete account.id;
 ```
 

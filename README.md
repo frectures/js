@@ -54,7 +54,7 @@ console.log(Array.from(squares(10)));
 - Released in 1996 as *JavaScript*® for marketing purposes
   - Registered trademark of Oracle America Inc.
 - Standardized as *ECMAScript* in 1997 (*E*uropean *C*omputer *M*anufacturers *A*ssociation)
-- Long version gap between 2005 and 2015
+- Long version gap between 1999 and 2009
   - Time for browser implementers to catch up
 - Yearly releases since 2015 (ES6)
 
@@ -111,7 +111,7 @@ document.getElementById("output").value = text;
      - `false`
      - `true`
   2. `number` (double precision floating point)
-     - `0.1 + 0.2 == 0.30000000000000004`
+     - `0.1 + 0.2 === 0.30000000000000004`
      - Contains all integers up to 2<sup>53</sup> = `9_007_199_254_740_992`
   3. `bigint` (arbitrary precision integer)
      - `123n`
@@ -120,6 +120,7 @@ document.getElementById("output").value = text;
      - `"Ain't no sunshine"`
      - `'The cow says: "Moo"'`
      - `` `Frantic fans: "It's great!"` ``
+     - `"🤨".length === 2`
   5. `undefined`
      - uninitialized variables
      - function calls without return value
@@ -132,8 +133,9 @@ document.getElementById("output").value = text;
   - `Array`
   - ...
 
-> **Exercise:** Evaluate the following expressions in the browser console (F12).  
-> Which results do you find surprising?
+> **Exercise:**
+> - Evaluate the following expressions in the browser console (F12)
+> - Which results do you find surprising?
 
 ```js
 typeof false
@@ -190,7 +192,7 @@ function f() {
 }                   
 ```
 
-- `const` variables require initialization and forbid mutation of the variable:
+- `const` requires initialization and forbids mutation of the variable:
 
 ```js
 function f() {
@@ -205,11 +207,6 @@ function f() {
     account = new Account(); //   TypeError: Assignment to constant variable
 }
 ```
-
-> **Guideline:**
-> 1. prefer `const` by default
-> 2. use `let` when `const` is too restrictive
-> 3. avoid `var`
 
 ## [Equality](https://stackoverflow.com/a/23465314)
 
@@ -242,14 +239,14 @@ function f() {
 ### Conditionals
 
 ```js
-let coin;
+let coin1;
 if (Math.random() < 0.5) {
-    coin = "heads";
+    coin1 = "heads";
 } else {
-    coin = "tails";
+    coin1 = "tails";
 }
 
-const coin = Math.random() < 0.5 ? "heads" : "tails";
+const coin2 = Math.random() < 0.5 ? "heads" : "tails";
 ```
 
 ### switch/case
@@ -296,12 +293,10 @@ do {
 > **Exercise:**
 > 1. Write a `for` loop that logs all divisors of `42`
 >    - Hint: `dividend % divisor === rest`
->    - *expected:* 1, 2, 3, 6, 7, 14, 21, 42
 > 2. Start with `x = 27` and write a `while` loop that logs `x` and transforms it once per iteration:
 >    - If `x` is even, divide `x` by 2
 >    - If `x` is odd, multiply `x` by 3 and increment
 >    - Stop the loop when `x` reaches 1
->    - *expected:* 112 values
 
 ### Exceptions
 
@@ -321,7 +316,8 @@ try {
 
 ```js
 throw true;
-throw 42.0;
+throw 3.14;
+throw 123n;
 throw "string literal";
 throw undefined;
 throw null;
@@ -452,32 +448,38 @@ const average3 = (x, y) => (x + y) / 2;
 
 ## Objects
 
-- Useful lie for beginners 👶 “JavaScript has 2 kinds of objects”:
-  1. Object literals
+- Useful beginner lie 👶 “JavaScript has 2 kinds of objects”:
+  1. Object literals / JSON (*J*ava*S*cript *O*bject *N*otation)
   2. Class objects
 - In reality, there is only 1 kind of object, but the whole truth is quite complicated
 
-### Object literals
+### Object literals / JSON
 
 - A JavaScript object is essentially a `java.util.LinkedHashMap<String, Object>`
-- Quotation marks around keys in object literals are optional:
 
 ```js
-// object literal
-const inventor = { "forename": "Brendan", surename: "Eich" };
-                   //////////             ////////
+// Object literal
+const inventor = { forename: "Brandon", surename: "Eich" };
 
-// reading properties
-inventor.forename    // 'Brendan'
+// read properties
+inventor.forename    // 'Brandon'
 inventor["surename"] // 'Eich'
 
-// writing properties
-inventor["year"]  =  1961;        // { forename: 'Brendan', surename: 'Eich', year: 1961 }
-inventor.language = "JavaScript"; // { forename: 'Brendan', surename: 'Eich', year: 1961, language: 'JavaScript' }
+// write properties
+inventor.forename = "Brendan"; // { forename: 'Brendan', surename: 'Eich' }
+inventor["year"]  =  1961;     // { forename: 'Brendan', surename: 'Eich', year: 1961 }
 
-// deleting properties
-delete inventor.forename;         // { surename: 'Eich', year: 1961, language: 'JavaScript' }
+// delete properties
+delete inventor.forename;      // { surename: 'Eich', year: 1961 }
+
+// JSON
+const str  = JSON.stringify(inventor); // '{"surename":"Eich","year":1961}'
+const twin = JSON.parse(str);          //  { surename: 'Eich', year: 1961 }
 ```
+
+- Quotation marks around keys are:
+  - optional in literals
+  - mandatory in JSON
 
 ### Class objects
 
@@ -512,17 +514,17 @@ account.getBalance() // 1234
 ```js
 const account = new Account(1000, 42);
 
-// add field
+// add field to object
 account.audited = true;
 
-// delete field
+// delete field from object
 delete account.id;
 
-// substitute method for 1 account object
-account.getBalance = function () { return Math.random(); }
+// deactivate method for object
+account.deposit = undefined;
 
-// substitute method for all Account objects, past and future
-Account.prototype.getBalance = function () { return Math.random(); }
+// delete method from class
+delete Account.prototype.deposit;
 
 // change an object's class after creation
 account.__proto__ = SavingsAccount.prototype;
