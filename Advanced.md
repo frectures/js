@@ -318,7 +318,77 @@ account.__proto__.deposit               // [Function: deposit]
 account.__proto__.getBalance            // [Function: getBalance]
 ```
 
+### Callbacks and `this`
+
+```js
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+
+class Account {
+    constructor() {
+        this.balance = 0;
+    }
+
+    depositTomorrow(amount) {
+        setTimeout(() => {
+            this.balance += amount; // this = the account object
+        }, MILLISECONDS_PER_DAY);
+    }
+
+    depositTomorrow_failsSilently(amount) {
+        setTimeout(function () {
+            this.balance += amount; // this = the global object (window)
+        }, MILLISECONDS_PER_DAY);
+    }
+
+    depositTomorrow_worksVintage(amount) {
+        var that = this;            // this = the account object
+        setTimeout(function () {
+            that.balance += amount; // that = the account object
+        }, MILLISECONDS_PER_DAY);
+    }
+
+    deposit(amount) {
+        this.balance += amount;
+    }
+
+    depositTomorrow_failsAgain(amount) {
+        setTimeout(this.deposit, MILLISECONDS_PER_DAY);
+        //         this.deposit does not preserve this for later call
+        //        (also, amount will be undefined)
+    }
+
+    depositTomorrow_worksAgain(amount) {
+        setTimeout(this.deposit.bind(this, amount), MILLISECONDS_PER_DAY);
+        //                      preserves this (and amount) for later call
+    }
+}
+```
+
+- Ordinary functions `function () {}` do not preserve outer `this`
+  - Arrow functions `() => {}` do
+- Uncalled methods `obj.method` do not bind `this` to `obj`
+  - Bound methods `obj.method.bind(obj)` do
+- Hypothetical implementation if `bind` (2009) weren't built in:
+
+```js
+//                                       variadic function
+Function.prototype.bind = function (obj, ...xs) {
+
+    return (...ys) => this.call(obj, ...xs, ...ys);
+    //      variadic function        spread operator
+};
+```
+
+> **Exercise:**
+> - The above `bind` implementation is a function returning an arrow function
+> - Which other combination(s) could also (be made to) work?
+>   - function returning function
+>   - arrow function returning function
+>   - arrow function returning arrow function
+
 ### Polyfills
+
+- Since 2023, arrays have a `toSorted` method:
 
 ```js
 const sortedByYear = people.toSorted((a, b) => a.year - b.year);
