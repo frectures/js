@@ -481,6 +481,31 @@ const twin = JSON.parse(str);          //  { surename: 'Eich', year: 1961 }
   - optional in literals
   - mandatory in JSON
 
+> **Exercise:** Complete the function `countWords`
+
+```js
+function countWords(str) {
+    // TODO: create empty object
+    for (const word of str.match(/\w+/g)) {
+        // TODO: increment value of key word in object
+    }
+    // TODO: return object
+}
+
+countWords("Wenn Fliegen hinter Fliegen Fliegen fliegen, fliegen Fliegen Fliegen nach.");
+// { Wenn: 1, Fliegen: 5, hinter: 1, fliegen: 2, nach: 1 }
+
+countWords("The constructor does not CREATE objects; The constructor INITIALIZES objects!");
+// Something weird happens; theoretically fixable with extra code.
+
+countWords("Every JavaScript object has a special __proto__ property related to inheritance.");
+// Something weird happens; impossible to fix with additional code.
+```
+
+> **Exercise:**
+> - Apparently, JavaScript objects have pitfalls for dynamic keys
+> - Replace the JavaScript object with a [Map](https://www.w3schools.com/js/js_object_maps.asp) (2015)
+
 ### Class objects
 
 ```js
