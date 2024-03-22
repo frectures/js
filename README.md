@@ -4,7 +4,7 @@
 
 ![](img/brendan.jpg)
 
-> “I was recruited to Netscape with the promise of doing Scheme in the browser”
+> **Brendan Eich:** “I was recruited to Netscape with the promise of doing Scheme in the browser.”
 
 <table>
 <tr>
@@ -45,18 +45,33 @@ console.log(Array.from(squares(10)));
 </tr>
 </table>
 
-- Designed and implemented as *LiveScript* during 10 days in 1995 by Brendan Eich at Netscape
 - Main influences:
   - Scheme (Functions)
   - Self (Prototypes)
   - Java (Syntax)
-  - Perl (Regular expressions)
-- Released in 1996 as *JavaScript*® for marketing purposes
-  - Registered trademark of Oracle America Inc.
-- Standardized as *ECMAScript* in 1997 (*E*uropean *C*omputer *M*anufacturers *A*ssociation)
-- Long version gap between 1999 and 2009
-  - Time for browser implementers to catch up
-- Yearly releases since 2015 (ES6 / ES2015)
+  - Perl (Regex)
+- Initial version “Mocha” written during 10 days in May 1995
+
+```
+         Mocha
+          LiveScript
+           JavaScript
+           |  JScript
+           |  |   ES1 ES2  ES3                                     ES5                    ES6
+           |  |   |   |    |                                       |                      |
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---
+93  94  95  96  97  98  99  00  01  02  03  04  05  06  07  08  09  10  11  12  13  14  15
+  |   |   |             |       |         |   | |     |       |   |               |       |
+  |   |   Internet      |       JSON      |   | Ajax  jQuery  |   Node.js     Electron.js |
+  |   |   Explorer      XMLHTTP           |   |               |                           |
+  |   |                                   |   Mozilla         Google                      Microsoft
+  |   Netscape                            |   Firefox         Chrome                      Edge
+  |   Navigator                           |
+  |                                       Apple
+  Mosaic                                  Safari
+```
+
+- Yearly releases since 2015 (ECMAScript 6)
 
 ## Platforms
 
