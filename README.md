@@ -56,7 +56,7 @@ console.log(Array.from(squares(10)));
 - Standardized as *ECMAScript* in 1997 (*E*uropean *C*omputer *M*anufacturers *A*ssociation)
 - Long version gap between 1999 and 2009
   - Time for browser implementers to catch up
-- Yearly releases since 2015 (ES6)
+- Yearly releases since 2015 (ES6 / ES2015)
 
 ## Platforms
 
@@ -220,54 +220,64 @@ function f() {
 
 - There is no universal `equals` method for object equality
 
-## Truthy vs. falsy values
-
-- `condition ? "truthy" : "falsy"`
-- All falsy values:
-  - `false`
-  - `NaN`
-  - `+0.0`
-  - `-0.0`
-  - `0n`
-  - `""`
-  - `undefined`
-  - `null`
-- All other values are truthy
-
 ## Control flow
 
-### Conditionals
-
 ```js
-let coin1;
-if (Math.random() < 0.5) {
-    coin1 = "heads";
-} else {
-    coin1 = "tails";
-}
+function releaseYearOfEcmaScript(version) {
+    if (version < 1) throw new Error(`non-positive ECMAScript version ${version}`);
+    //               /////
+    switch (version) {
+    //////
+        case 1: return 1997;
+        case 2: return 1998;
+        case 3: return 1999;
+        case 4: throw new Error("abandoned ECMAScript version 4");
+        case 5: return 2009;
 
-const coin2 = Math.random() < 0.5 ? "heads" : "tails";
-```
-
-### switch/case
-
-```js
-switch (expression) {
-    case 42: // ...
-    break;
-
-    case "hello": // ...
-    break;
-
-    case true: // ...
-    break;
-
-    case f(): // ...
-    break;
-
-    default: // ...
+        default: return (version >= 2015) ? version : 2009 + version;
+    }            //////                  ///       ///
 }
 ```
+
+> **Exercise:**
+> - `releaseYearOfEcmaScript` handles some illegal inputs (such as 0 and 4)
+> - Can you think of more illegal inputs to `releaseYearOfEcmaScript`?
+> - Handle those illegal inputs as you see fit
+
+### truthy/falsy conditions
+
+- Technically, conditions are not restricted to `boolean`s:
+
+```js
+function f(condition) {
+    if (condition) {
+        return "truthy";
+    } else {
+        return "falsy";
+    }
+}
+
+f(42)  // truthy
+f( 0)  // falsy
+f("0") // truthy
+f("")  // falsy
+```
+
+- The following equivalent function explicitly lists all falsy conditions:
+
+```js
+function g(condition) {
+    const falsyConditions = [ false, NaN, 0, -0, 0n, "", undefined, null ];
+
+    return falsyConditions.includes(condition) ? "falsy" : "truthy";
+}
+```
+
+- For the sake of maintenance, prefer boolean conditions over truthy/falsy conditions
+
+> **Exercise:**
+> - Replace the array in function `g` with a `switch`
+> - Is `g` still equivalent to `f`? Try all falsy conditions!
 
 ### Loops
 
@@ -297,37 +307,6 @@ do {
 >    - If `x` is even, divide `x` by 2
 >    - If `x` is odd, multiply `x` by 3 and increment
 >    - Stop the loop when `x` reaches 1
-
-### Exceptions
-
-```js
-try {
-    // ...
-} catch (ex) {
-    // ...
-} finally {
-    // ...
-}
-```
-
-- A single `catch` block catches all exceptions
-- At least one of `catch` and `finally` must be present
-- All JavaScript values, including primitives, can be thrown:
-
-```js
-throw true;
-throw 3.14;
-throw 123n;
-throw "string literal";
-throw undefined;
-throw null;
-
-throw new Error("error object");
-
-throw { message: "object literal" };
-
-throw function () { };
-```
 
 ## Functions
 
