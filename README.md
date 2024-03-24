@@ -442,9 +442,12 @@ const twin = JSON.parse(str);          //  { surename: 'Eich', year: 1961 }
 
 ```js
 class Account {
+    static instanceCounter = 0;
+
     constructor(initialBalance, accountId) {
         this.balance = initialBalance;
         this.id = accountId;
+        Account.instanceCounter += 1;
     }
 
     deposit(amount) {
@@ -462,11 +465,38 @@ account.deposit(234);
 account.getBalance() // 1234
 ```
 
-### A glimmer of truth
+### Syntax sugar
 
 > Even though ECMAScript includes syntax for class definitions,
 > **[ECMAScript objects](https://tc39.es/ecma262/#sec-objects) are not fundamentally class-based**
 > such as those in C++, Smalltalk, or Java
+
+- The `class Account` example desugars to:
+
+```js
+function Account(initialBalance, accountId) {
+    this.balance = initialBalance;
+    this.id = accountId;
+    Account.instanceCounter += 1;
+}
+
+Account.instanceCounter = 0;
+
+Account.prototype.deposit = function (amount) {
+    this.balance += amount;
+};
+
+Account.prototype.getBalance = function () {
+    return this.balance;
+};
+```
+
+- Key points to remember:
+  - `new T()` objects store fields
+  - `T.prototype` object stores methods
+  - `new T().__proto__ === T.prototype`
+  - `T` object stores static fields
+- Less rigid than the `class` keyword may suggest:
 
 ```js
 const account = new Account(1000, 42);
@@ -486,9 +516,6 @@ delete Account.prototype.deposit;
 // change an object's class after creation
 account.__proto__ = SavingsAccount.prototype;
 ```
-
-- `new T().__proto__ === T.prototype`
-- The prototype system is explained fully in `Advanced.md`
 
 ### Dynamic maps
 
