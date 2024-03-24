@@ -519,7 +519,9 @@ account.__proto__ = SavingsAccount.prototype;
 
 ### Dynamic maps
 
-> **Exercise:** Complete the function `countWords`
+> **Exercise:**
+> - Study the “Object literals / JSON” example again
+> - Then complete the function `countWords`:
 
 ```js
 function countWords(str) {
@@ -540,9 +542,10 @@ countWords("Most JavaScript objects have a special __proto__ property related to
 // Do you notice something weird?
 ```
 
-> **Exercise:** Apparently, object literals `{}` have pitfalls for dynamic keys
-> - Either replace `{}` with `Object.create(null)`
-> - Or replace `{}` with a [Map](https://www.w3schools.com/js/js_object_maps.asp) (2015)
+> **Exercise:**
+> - Apparently, object literals `{}` have pitfalls for dynamic keys
+> - Replace the object literal `{}` with a [`new Map()`](https://www.w3schools.com/js/js_object_maps.asp) (2015)
+>   - pertinent methods: has, get, set
 
 ![](img/array.jpg)
 
