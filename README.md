@@ -1,62 +1,25 @@
 # JavaScript Basics
 
+![](img/douglas.jpg)
+
+> **Douglas Crockford:** “JavaScript is the only language (that I'm aware of) where people feel they don't need to learn it before using it.”
+
 ## History
-
-![](img/brendan.jpg)
-
-> **Brendan Eich:** “I was recruited to Netscape with the promise of doing Scheme in the browser.”
-
-<table>
-<tr>
-<th>Racket (PLT Scheme)</th>
-<th>JavaScript</th>
-</tr>
-<tr>
-<td>
-
-```scheme
-(define (squares n)
-  (for/stream ([x (in-range n)])
-    (* x x)))
-
-
-
-(writeln (stream->list (squares 10)))
-
-; (0 1 4 9 16 25 36 49 64 81)
-```
-
-</td>
-<td>
-
-```js
-function* squares(n) {
-    for (let x = 0; x < n; ++x) {
-        yield x * x;
-    }
-}
-
-console.log(Array.from(squares(10)));
-
-// [ 0, 1, 4, 9, 16, 25, 36, 49, 64, 81 ]
-```
-
-</td>
-</tr>
-</table>
 
 - Main influences:
   - Scheme (Functions)
   - Self (Prototypes)
   - Java (Syntax)
   - Perl (Regex)
-- Initial version “Mocha” written during 10 days in May 1995
+- Initial version “Mocha”
+  - written during 10 days in May 1995
+  - by Brandan Eich @ Netscape
 
 ```
          Mocha
           LiveScript
            JavaScript
-           |  JScript
+           | (JScript)
            |  |   ES1 ES2  ES3                                     ES5                    ES6
            |  |   |   |    |                                       |                      |
 +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---
@@ -111,7 +74,7 @@ document.getElementById("output").value = text;
 - Node.js (backend)
   - JavaScript runtime environment built on Chrome's V8 JavaScript engine
   - High-performance, asynchronous server code
-- Electron = Chromium + Node.js (cross-platform desktop applications)
+- Electron.js = Chromium + Node.js (cross-platform desktop applications)
   - Atom
   - Discord
   - Microsoft Teams
