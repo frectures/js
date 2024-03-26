@@ -13,15 +13,47 @@ function makeCounter() {
     };
 }
 
-const counter = makeCounter();
+const a = makeCounter();
+const b = makeCounter();
 
-console.log(counter()); // 1
-console.log(counter()); // 2
-console.log(counter()); // 3
+console.log(a ()); // 1
+console.log(a ()); // 2
+console.log( b()); //  1
+console.log(a ()); // 3
+console.log( b()); //  2
+console.log( b()); //  3
 ```
 
 - Functions have access to their surrounding context
 - Even after the enclosing function has returned!
+
+> **Exercise:** Complete the function `makeFibonacci()`:
+
+```js
+function makeFibonacci() {
+    // TODO initialize state
+
+    return function () {
+        // TODO update state
+        // TODO return value
+    };
+}
+
+const f = makeFibonacci();
+
+console.log(f()); // 0
+console.log(f()); // 1
+console.log(f()); // 1
+console.log(f()); // 2
+console.log(f()); // 3
+console.log(f()); // 5
+console.log(f()); // 8
+console.log(f()); // 13
+console.log(f()); // 21
+console.log(f()); // 34
+console.log(f()); // 55
+console.log(f()); // 89
+```
 
 ### Generators
 
