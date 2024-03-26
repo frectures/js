@@ -161,10 +161,35 @@ switch (state) {
 ```
 
 > **Exercise:**
-> - Write a generator function `divisors(x)` that yields all divisors of `x`
-> - Write a function `isPerfectNumber(x)` that uses `divisors` and the `reduce` method
->   - The divisors of a perfect number add up to twice that number
->   - The first 4 perfect numbers are 6, 28, 496 and 8128
+> - Study the callback-based function `walkTheDom1` and its example call
+> - Visit any website and paste the code into the browser console
+
+```js
+function walkTheDom1(node, callback) {
+    callback(node);
+    for (const child of node.children) {
+        walkTheDom1(child, callback);
+    }
+}
+
+walkTheDom1(document, function (node) {
+    console.log(node.nodeName);
+});
+```
+
+> **Exercise:**
+> - Complete the generator function `walkTheDom2`
+> - Does it find the same nodes as `walkTheDom1`?
+
+```js
+function* walkTheDom2(node) {
+    // TODO recursively yield all nodes
+}
+
+for (const node of walkTheDom2(document)) {
+    console.log(node.nodeName);
+}
+```
 
 ## Objects
 
