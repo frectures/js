@@ -43,8 +43,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link     rel="stylesheet"     href="pretty.css">
-<script  type="text/javascript" src="bundle.js"></script>
+<link rel="stylesheet" href="pretty.css">
+<script defer src="bundle.js"></script>
 </head>
 <body>
 
@@ -53,7 +53,7 @@
 </div>
 
 </body>
-<script  type="text/javascript">
+<script>
 
 // ...
 let response = await fetch("https://raw.githubusercontent.com/frectures/js/master/README.md");
@@ -642,7 +642,7 @@ const sortedBySurename = people.toSorted((a, b) => a.surename.localeCompare(b.su
 
 - One file per module
 - Explicit `export`s and `import`s
-- Browsers support modules via `<script type="module" src="app.js">` from web servers
+- Browsers support modules via `<script type="module" src="mod.js">` (implicit `defer`) from web servers
 - But modules are usually bundled into a single `bundle.js` file by module bundlers like Webpack
 
 ### Named exports

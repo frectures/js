@@ -9,7 +9,7 @@
 <canvas id="canvas" width="1920" height="1080"></canvas>
 
 </body>
-<script type="text/javascript">
+<script>
 
 const PALETTE = [
     0x00421E0F, 0x0019071A, 0x0009012F, 0x00040449,
@@ -41,8 +41,8 @@ function compute() {
 }
 compute();
 
-canvas.onclick = function (ev) {
-    (ev.shiftKey ? zoomOut2x : zoomIn4x)(ev.offsetX, ev.offsetY);
+canvas.onclick = function (event) {
+    (event.shiftKey ? zoomOut2x : zoomIn4x)(event.offsetX, event.offsetY);
     compute();
 }
 
