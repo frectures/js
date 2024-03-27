@@ -1,0 +1,12 @@
+{
+  "include": [
+    "./src/**/*",
+  ],
+  "compilerOptions": {
+    "outDir": "./out",
+    "target": "ESNext",
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noEmitOnError": true,
+  },
+}
