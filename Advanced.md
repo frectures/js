@@ -576,7 +576,7 @@ function square(x) {
 ```js
 // app.js
 
-import { PI, distance as distanceFromOrigin } from './trig';
+import { PI, distance as distanceFromOrigin } from './trig.js';
 
 const distance = 1.5;
 
@@ -589,7 +589,7 @@ console.log(distanceFromOrigin(3, 4));
 ```js
 // app.js
 
-import * as trig from './trig';
+import * as trig from './trig.js';
 
 const distance = 1.5;
 

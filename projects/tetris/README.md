@@ -1,7 +1,8 @@
 # Tetris
 
 - Write a Tetris clone, in groups of 1/2/3 people
-- Your journey is guided by [milestones](#milestones) and [FAQs](#faq)
+- Your journey is guided by [Milestones](#milestones) and [FAQs](#faq)
+  - Hard mode: Ignore the FAQs; research everything yourself
 - Which functions and classes should you write?
   - That is entirely (and intentionally!) up to you
   - Hopefully, this will result in many different solutions to compare and contrast
@@ -55,27 +56,14 @@
 - Remove full lines; the lines above are pulled down
 - For every 10 lines removed, increase the gravity
 
-### Score
-
-- Display a score below the board
-- A “hard drop” is worth the distance it was dropped
-- Full lines are scored as follows:
-
-| Lines | Points |
-| :---: | -----: |
-|     1 |     40 |
-|     2 |    100 |
-|     3 |    300 |
-|     4 |   1200 |
-
 ### Friends
 
 - Two players play side by side
 - They do not influence each other
 - If your code so far is full of global variables:
   - Do *not* copy/paste the player-specific variables!
-  - Move those variables into a `class Tetris` instead
-  - Then you can simply create 2 objects of that class
+  - Move those variables into a `class` instead
+  - Then you can instantiate that `class` twice
 
 ### Enemies
 
@@ -97,8 +85,24 @@
 - The first 7 random shapes should all be different
 - The next 7 random shapes should all be different etc.
 
+### Score
+
+- Display a score below the board
+- Every “hard drop” is worth the distance it was dropped
+- Full lines are scored as follows:
+
+| Lines | Points |
+| :---: | -----: |
+|     1 |     40 |
+|     2 |    100 |
+|     3 |    300 |
+|     4 |   1200 |
+
 ### Polish
 
+- Draw the next piece above the board
+- Draw a shadow/ghost piece where the current piece would land
+  - This reduces hard-drop errors
 - Replace the rectangles with nicer looking images
 
 ## FAQ
@@ -131,49 +135,44 @@ context.fillRect(
 ```js
 canvas.tabIndex = 0; // make canvas focus-able
 canvas.focus();
-canvas.onkeydown = ({key}) => {
+canvas.style.outline = "none";
+
+canvas.onkeydown = function ({key}) {
     console.log(key);
 
-    // swallow every key except reload and console
+    // swallow every key, except reload and devtools
     return key === "F5" || key === "F12";
 }
 ```
 
-### What does `({key}) => { ... }` mean?
+### What does `function ({key}) { ... }` mean?
 
-- That's an arrow function with a destructured parameter list
-- It means the same as `(event) => { let key = event.key; ... }`
+- That's a function with a destructured parameter list
+- It means the same as `function (event) { let key = event.key; ... }`
 
 ### How do I keep drawing frames?
 
-- Fixed framerate for simple games like Tetris:
+- Assuming roughly 30 frames per second
+- `setInterval` solution:
 
 ```js
 function gameLoop() {
-    // ...
+    // ... draw ...
 }
 
-setInterval(gameLoop, 1000 / 30); // request 30 frames per second
+setInterval(gameLoop, 1000 / 30); // call gameLoop every 33 ms
 ```
 
-- Monitor-dependent framerate for smooth animations:
+- `setTimeout` solution:
 
 ```js
-function gameLoop(millisecondsSinceStart) {
-    // ...
+function gameLoop() {
+    setTimeout(gameLoop, 1000 / 30); // next call to gameLoop in 33 ms
 
-    requestAnimationFrame(gameLoop); // request next frame
+    // ... draw ...
 }
 
-requestAnimationFrame(gameLoop); // request first frame
-```
-
-### How do I draw text?
-
-```js
-context.font = "42px monospace";
-context.fillStyle = "white";
-context.fillText("Make lav not war", 0, 42);
+setTimeout(gameLoop, 1000 / 30); // first call to gameLoop in 33 ms
 ```
 
 ### How do I generate my own deterministic random numbers?
@@ -212,6 +211,14 @@ const a = generator.next().value;
 const b = generator.next().value;
 const c = generator.next().value;
 // ...
+```
+
+### How do I draw text?
+
+```js
+context.font = "42px monospace";
+context.fillStyle = "white";
+context.fillText("Make lav not war", 0, 42);
 ```
 
 ### How do I draw an image?
