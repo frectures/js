@@ -199,3 +199,119 @@ swap(a, b);   // does NOT swap a with b
 | value → **object**           | parameter → **variable** |
 | potentially unbound (`null`) | guaranteedly bound       |
 | generally rebindable (`=`)   | til death do us part     |
+
+### Generators
+
+- Generators are stackless coroutines
+- Implemented via state machines
+  - Working C++ example:
+
+```cpp
+class Fibonacci {
+    long a;
+    long b;
+
+    int state = 0;
+
+public:
+                    long next() {
+switch (state) {
+    case 0:             a = 0;
+    state = 1;          return a;
+
+    case 1:             b = 1;
+    state = 2;          return b;
+
+                        while (true) {
+    case 2:                 a += b;
+    state = 3;              return a;
+
+    case 3:                 b += a;
+    state = 4;              return b;
+
+    case 4: ;           }
+}                   }
+};
+```
+
+> **Exercise:**
+> - Study the callback-based function `walkTheDom1` and its example call
+> - Visit any website and paste the code into the browser console
+
+```js
+function walkTheDom1(node, callback) {
+    callback(node);
+    for (const child of node.children) {
+        walkTheDom1(child, callback);
+    }
+}
+
+walkTheDom1(document, function (node) {
+    console.log(node.nodeName);
+});
+```
+
+> **Exercise:**
+> - Complete the generator function `walkTheDom2`
+> - Does it find the same nodes as `walkTheDom1`?
+
+```js
+function* walkTheDom2(node) {
+    // TODO recursively yield all nodes
+}
+
+for (const node of walkTheDom2(document)) {
+    console.log(node.nodeName);
+}
+```
+
+## Privacy
+
+### 2009 freeze
+
+- `Object.freeze` prevents properties from being added (or modified):
+
+```js
+function createAccount(balance) {
+    return Object.freeze({
+        deposit: function(amount) {
+            balance += amount;
+        },
+
+        getBalance: function() {
+            return balance;
+        },
+    });
+}
+
+const a = createAccount(123);
+
+a.balance = 1000000; // fails silently
+a.getBalance()       // 123
+a.balance            // undefined
+```
+
+### 2015 strict mode
+
+```js
+"use strict"; // default inside modules, btw
+
+function createAccount(balance) {
+    return Object.freeze({
+        deposit(amount) {
+            balance += amount;
+        },
+
+        getBalance() {
+            return balance;
+        },
+    });
+}
+
+const a = createAccount(123);
+
+a.balance = 1000000;
+// Uncaught TypeError: Cannot add property balance, object is not extensible
+```
+
+- The only way to provide true privacy before 2022

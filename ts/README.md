@@ -109,11 +109,7 @@ const json = await response.json() as Joke;
 - And `json.fred` warns:
   - `Property 'fred' does not exist on type 'Joke'`
 
-> **Exercise:**
-> - Convert your `projects/02 xkcd` solution from JavaScript to TypeScript
-> - If you don't have a solution (anymore):
->   - Either write a minimal solution in JavaScript and then convert to TypeScript
->   - Or start writing in TypeScript right away
+> **Exercise:** Convert `projects/01 password` from JavaScript to TypeScript
 
 ### Union types
 

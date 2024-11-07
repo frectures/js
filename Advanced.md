@@ -2,7 +2,42 @@
 
 ## Functions
 
-### Closures
+### Functions accepting functions
+
+```js
+function square(x) {
+    return x * x;
+}
+
+square(3) // 9
+
+
+function twice(f, x) {
+    return f(f(x));
+}
+
+twice(square, 3) // 81
+```
+
+### Closures: Functions returning functions
+
+```js
+function twice(f) {
+    return function (x) {
+        return f(f(x));
+    }
+}
+
+const hypercube = twice(square);
+
+hypercube(3) // 81
+
+twice(square)(3) // 81
+```
+
+- Inner functions have access to variables of their outer function
+- Even after the outer function (here `twice`) has returned!
+- JavaScript even allows modification of the outer variables:
 
 ```js
 function makeCounter() {
@@ -16,18 +51,13 @@ function makeCounter() {
 const a = makeCounter();
 const b = makeCounter();
 
-console.log(a ()); // 1
-console.log(a ()); // 2
-console.log( b()); //  1
-console.log(a ()); // 3
-console.log( b()); //  2
-console.log( b()); //  3
+// 1    2         3
+[  a(), a(), b(), a(), b(), b()  ] // [1, 2, 1, 3, 2, 3]
+//           1         2    3
 ```
 
-- Functions have access to their surrounding context
-- Even after the enclosing function has returned!
-
-> **Exercise:** Complete the function `makeFibonacci()`:
+> **Exercise:**
+> - Complete the function `makeFibonacci`:
 
 ```js
 function makeFibonacci() {
@@ -41,18 +71,8 @@ function makeFibonacci() {
 
 const f = makeFibonacci();
 
-console.log(f()); // 0
-console.log(f()); // 1
-console.log(f()); // 1
-console.log(f()); // 2
-console.log(f()); // 3
-console.log(f()); // 5
-console.log(f()); // 8
-console.log(f()); // 13
-console.log(f()); // 21
-console.log(f()); // 34
-console.log(f()); // 55
-console.log(f()); // 89
+// 0    1    1    2    3    5    8    13   21   34   55   89
+[  f(), f(), f(), f(), f(), f(), f(), f(), f(), f(), f(), f()  ]
 ```
 
 ### Generators
@@ -100,11 +120,13 @@ function* fibonacci() {
 
 const generator = fibonacci();
 
-console.log(generator.next());   // { value: 0n, done: false }
-console.log(generator.next());   // { value: 1n, done: false }
-console.log(generator.next());   // { value: 1n, done: false }
-console.log(generator.next());   // { value: 2n, done: false }
-console.log(generator.next());   // { value: 3n, done: false }
+generator.next();       // { value: 0n, done: false }
+generator.next();       // { value: 1n, done: false }
+generator.next();       // { value: 1n, done: false }
+generator.next();       // { value: 2n, done: false }
+generator.next();       // { value: 3n, done: false }
+generator.next();       // { value: 5n, done: false }
+generator.next();       // { value: 8n, done: false }
 ```
 
 - Generator `function*`s return generator objects
@@ -113,7 +135,8 @@ console.log(generator.next());   // { value: 3n, done: false }
 ```js
 for (const value of fibonacci()) {
     if (value >= 1000) break;
-    console.log(value);   // 0n 1n 1n 2n 3n 5n 8n 13n 21n 34n 55n 89n 144n 233n 377n 610n 987n
+
+    console.log(value); // 0n 1n 1n 2n 3n 5n 8n 13n 21n 34n 55n 89n 144n 233n 377n 610n 987n
 }
 ```
 
@@ -122,73 +145,29 @@ for (const value of fibonacci()) {
 ```js
 const generator = fibonacci();
 let value, done;
+//     destructuring
 while ({value, done} = generator.next(), !done) {
     if (value >= 1000) break;       // ^
-    console.log(value);            //  comma operator
+                                    // comma operator
+    console.log(value);
 }
-```
-
-- Generators are stackless coroutines
-- Implemented via state machines
-  - Working C++ example:
-
-```cpp
-class Fibonacci {
-    long a;
-    long b;
-
-    int state = 0;
-
-public:
-                    long next() {
-switch (state) {
-    case 0:             a = 0;
-    state = 1;          return a;
-
-    case 1:             b = 1;
-    state = 2;          return b;
-
-                        while (true) {
-    case 2:                 a += b;
-    state = 3;              return a;
-
-    case 3:                 b += a;
-    state = 4;              return b;
-
-    case 4: ;           }
-}                   }
-};
 ```
 
 > **Exercise:**
-> - Study the callback-based function `walkTheDom1` and its example call
-> - Visit any website and paste the code into the browser console
+> - Complete the generator function `finiteCounter`:
 
 ```js
-function walkTheDom1(node, callback) {
-    callback(node);
-    for (const child of node.children) {
-        walkTheDom1(child, callback);
-    }
+function* finiteCounter(from, to) {
+    // TODO
 }
 
-walkTheDom1(document, function (node) {
-    console.log(node.nodeName);
-});
-```
+const counter = finiteCounter(7, 9);
 
-> **Exercise:**
-> - Complete the generator function `walkTheDom2`
-> - Does it find the same nodes as `walkTheDom1`?
+counter.next() // {done: false, value: 7}
+counter.next() // {done: false, value: 8}
+counter.next() // {done: false, value: 9}
 
-```js
-function* walkTheDom2(node) {
-    // TODO recursively yield all nodes
-}
-
-for (const node of walkTheDom2(document)) {
-    console.log(node.nodeName);
-}
+counter.next() // {done: true,  value: undefined}
 ```
 
 ## Objects
@@ -452,12 +431,26 @@ const sortedByYear = people.toSorted((a, b) => a.year - b.year);
 ```js
 if (Array.prototype.toSorted === undefined) {
     Array.prototype.toSorted = function (compare) {
-        //            spread operator
-        const copy = [...this];
+        const copy = this.clone(); // doesn't actually work; arrays have no clone method
         copy.sort(compare);
         return copy;
     };
 }
+```
+
+> **Exercise:**
+> - Provide a `clone` method on arrays such that `a.clone()` works:
+
+```js
+// Implement your array clone method here...
+
+const a = [2, 3, 5, 7];
+const b = a.clone(); // ...such that this line of code works, as is
+
+a // [2, 3, 5, 7]
+b // [2, 3, 5, 7]
+
+a !== b // true; 2 objects, not 1
 ```
 
 ## Modules
@@ -559,6 +552,9 @@ import { callback } from "filename.js";
 document.getElementById("button").onclick = callback;
 </script>
 ```
+
+> **Exercise:**
+> - Convert `projects/01 password` to modules
 
 ## Privacy
 
@@ -684,63 +680,12 @@ a.balance            // 1000000
   - That `balance` is *not* an object property!
 - Also note the low number of keywords
 - Lisp programmers love this style
-  - Other programmers... tend not to
-
-### 2009 freeze
-
-- `Object.freeze` prevents properties from being added (or modified):
-
-```js
-function createAccount(balance) {
-    return Object.freeze({
-        deposit: function(amount) {
-            balance += amount;
-        },
-
-        getBalance: function() {
-            return balance;
-        },
-    });
-}
-
-const a = createAccount(123);
-
-a.balance = 1000000; // fails silently
-a.getBalance()       // 123
-a.balance            // undefined
-```
-
-### 2015 strict mode
-
-```js
-"use strict"; // default inside modules, btw
-
-function createAccount(balance) {
-    return Object.freeze({
-        deposit(amount) {
-            balance += amount;
-        },
-
-        getBalance() {
-            return balance;
-        },
-    });
-}
-
-const a = createAccount(123);
-
-a.balance = 1000000;
-// Uncaught TypeError: Cannot add property balance, object is not extensible
-```
-
-- The only way to provide true privacy before 2022
+  - Other programmers... usually don't
 - In practice, programmers either
   - just don't care about privacy that much, or
   - use `private` in TypeScript:
 
 ### TypeScript
-
-- The TypeScript compiler checks `private`, and then compiles it away:
 
 ```ts
 class Account {
@@ -752,6 +697,11 @@ class Account {
 
     // ...
 }
+
+const a = new Account(123);
+
+a.balance = 1000000;
+// Property 'balance' is private and only accessible within class 'Account'
 ```
 
 - The property and constructor can be fused together:
@@ -763,7 +713,20 @@ class Account {
 
     // ...
 }
+
+const a = new Account(123);
+
+a.balance = 1000000;
+// Property 'balance' is private and only accessible within class 'Account'
 ```
 
 - This approach to privacy is very popular
-- Everybody knows `private` from some other language
+  - Everybody knows `private` from some other language
+- Note that `private` is only checked at compile-time
+  - If you want to shoot yourself in the foot, `private` can be circumvented:
+
+```ts
+const a = new Account(123);
+
+(a as any).balance = 1000000; // Well, if you insist...
+```
