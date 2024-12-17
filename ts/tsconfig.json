@@ -5,8 +5,9 @@
   "compilerOptions": {
     "outDir": "./out",
     "target": "ESNext",
+    "lib": ["DOM"],
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "noEmitOnError": true,
+    "noEmitOnError": false,
   },
 }
