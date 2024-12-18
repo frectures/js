@@ -444,8 +444,27 @@ a !== b // true; 2 objects, not 1
 
 ## Modules
 
+### Problem
+
+- `.html` files traditionally “import” all required `.js` files:
+
+```html
+<script src="a.js"></script>
+<script src="b.js"></script>
+<script src="c.js"></script>
+```
+
+- `.js` files traditionally *cannot* “import” other `.js` files
+- Hence the dependencies of a `.js` file are:
+  - neither obvious,
+  - nor enforcable
+- Implementation details can easily leak into/pollute the global scope
+  - What if `a.js` and `b.js` both define a `function f()`?
+
+### Solution
+
 - One `.js` file per module
-- Explicit `export`s and `import`s
+- Explicit `export`s and `import`s between `.js` files
 - Simple but effective
 
 ### Named exports
