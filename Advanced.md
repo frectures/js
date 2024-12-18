@@ -133,10 +133,10 @@ generator.next();       // { value: 8n, done: false }
 - Generator objects are iterable:
 
 ```js
-for (const value of fibonacci()) {
-    if (value >= 1000) break;
+for (const x of fibonacci()) {
+    if (x >= 1000) break;
 
-    console.log(value); // 0n 1n 1n 2n 3n 5n 8n 13n 21n 34n 55n 89n 144n 233n 377n 610n 987n
+    console.log(x); // 0n 1n 1n 2n 3n 5n 8n 13n 21n 34n 55n 89n 144n 233n 377n 610n 987n
 }
 ```
 
@@ -144,12 +144,12 @@ for (const value of fibonacci()) {
 
 ```js
 const generator = fibonacci();
-let value, done;
+let x, done;
 //     destructuring
-while ({value, done} = generator.next(), !done) {
-    if (value >= 1000) break;       // ^
-                                    // comma operator
-    console.log(value);
+while ({value: x, done} = generator.next(), !done) {
+    if (x >= 1000) break;              // ^
+                                       // comma operator
+    console.log(x);
 }
 ```
 
