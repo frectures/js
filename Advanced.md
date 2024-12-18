@@ -317,7 +317,7 @@ new Account(1234, 42).getBalance === account.getBalance // true
 | `new F(x, y, z)`          | `{ __proto__: F.prototype }` |
 | `f.apply(obj, [x, y, z])` | `obj`       |
 | `f.call(obj, x, y, z)`    | `obj`       |
-| `f.bind(obj)(x, y, z)`    | `obj`       |
+| `f.bind(obj, x)(y, z)`    | `obj`       |
 
 &nbsp;
 
@@ -406,17 +406,6 @@ class Account {
   - Bound methods `obj.method.bind(obj)` do
 
 ### Polyfills
-
-- Hypothetical implementation if `bind` (2009) wasn't built in:
-
-```js
-//                                       rest parameters
-Function.prototype.bind = function (obj, ...xs) {
-
-    return (...ys) => this.call(obj, ...xs, ...ys);
-    //      rest parameters          spread operator
-};
-```
 
 - Since 2023, arrays have a `toSorted` method:
 
