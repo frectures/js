@@ -136,7 +136,7 @@ generator.next();       // { value: 8n, done: false }
 for (const x of fibonacci()) {
     if (x >= 1000) break;
 
-    console.log(x); // 0n 1n 1n 2n 3n 5n 8n 13n 21n 34n 55n 89n 144n 233n 377n 610n 987n
+    log(x); // 0n 1n 1n 2n 3n 5n 8n 13n 21n 34n 55n 89n 144n 233n 377n 610n 987n
 }
 ```
 
@@ -149,7 +149,7 @@ let x, done;
 while ({value: x, done} = generator.next(), !done) {
     if (x >= 1000) break;              // ^
                                        // comma operator
-    console.log(x);
+    log(x);
 }
 ```
 
@@ -304,6 +304,11 @@ new Account(1234, 42).getBalance === account.getBalance // true
   - Otherwise, `this` is `undefined`
 - *Every* function has an associated `prototype` property
   - But it's only useful for constructor functions
+- Key points to remember:
+  - `new T()` objects store fields
+  - `T.prototype` object stores methods
+  - `new T().__proto__ === T.prototype`
+  - `new T().constructor === T`
 
 > **Exercise:** Add `withdraw` functions to the 3 previous `Account` examples:
 > - “Factory functions”
@@ -352,6 +357,27 @@ account.__proto__                       // {}
 account.__proto__ === Account.prototype // true
 account.__proto__.deposit               // [Function: deposit]
 account.__proto__.getBalance            // [Function: getBalance]
+```
+
+- Less rigid than the `class` keyword may suggest:
+
+```js
+const account = new Account(1000, 42);
+
+// add field to object
+account.audited = true;
+
+// delete field from object
+delete account.id;
+
+// deactivate method for object
+account.deposit = undefined;
+
+// delete method from class
+delete Account.prototype.deposit;
+
+// change an object's class after creation
+account.__proto__ = SavingsAccount.prototype;
 ```
 
 ### Callbacks and `this`

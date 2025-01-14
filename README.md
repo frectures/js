@@ -13,7 +13,7 @@
   - Perl (Regex)
 - Initial version “Mocha”
   - written during 10 days in May 1995
-  - by Brandan Eich @ Netscape
+  - by Brendan Eich @ Netscape
 
 ```
          Mocha
@@ -43,8 +43,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <link rel="stylesheet" href="pretty.css">
-<script defer src="bundle.js"></script>
+
+<script defer           src="bundle.js"></script>
+
 </head>
 <body>
 
@@ -116,20 +119,22 @@ document.getElementById("output").value = text;
     - ...
 
 > **Exercise:**
-> - Evaluate the following expressions in the browser console (F12)
-> - Which results do you find surprising?
+> - Visit https://frectures.github.io/jspad/
+> - Copy/paste the program below
+> - Execute the whole program via F5
+> - Which logged types do you find surprising?
 
 ```js
-typeof false
-typeof 3.14
-typeof 123n
-typeof "hello"
-typeof "hello"[0]
-typeof undefined
-typeof null
-typeof {}
-typeof Math.log
-typeof []
+log(typeof false);
+log(typeof 3.14);
+log(typeof 123n);
+log(typeof "hello");
+log(typeof "hello"[0]);
+log(typeof undefined);
+log(typeof null);
+log(typeof {});
+log(typeof Math.log);
+log(typeof []);
 ```
 
 ![](img/refactoring.jpg)
@@ -146,15 +151,15 @@ typeof []
 
 ```js
 function f() {
-    console.log(x); // undefined
+    log(x); // undefined
     {
-        console.log(x); // undefined
+        log(x); // undefined
 
         var x = 42;
 
-        console.log(x); // 42
+        log(x); // 42
     }
-    console.log(x); // 42
+    log(x); // 42
 }                   
 ```
 
@@ -162,15 +167,15 @@ function f() {
 
 ```js
 function f() {
-    console.log(x); // ReferenceError: x is not defined
+    log(x); // ReferenceError: x is not defined
     {
-        console.log(x); // ReferenceError: x is not defined
+        log(x); // ReferenceError: x is not defined
 
         let x = 42;
 
-        console.log(x); // 42
+        log(x); // 42
     }
-    console.log(x); // ReferenceError: x is not defined
+    log(x); // ReferenceError: x is not defined
 }                   
 ```
 
@@ -264,8 +269,9 @@ function g(value) {
 ### Loops
 
 ```js
+const s = "racecar";
 for (let i = 0; i < s.length; ++i) {
-    console.log(s[i]);
+    log(s[i]);
 }
 
 
@@ -273,7 +279,7 @@ let x = 1;
 while (x + 1 > x) {
     x *= 2;
 }
-console.log(`${x} is the smallest integer without odd successor`);
+log(`${x} is the smallest integer without odd successor`);
 
 
 let password;
@@ -334,7 +340,7 @@ function fixCos() {
         // 0
         // 1
         // 0.5403023058681397
-        console.log(x);
+        log(x);
         // 0.7390851332151608
         // 0.7390851332151606
         // 0.7390851332151607
@@ -357,7 +363,7 @@ function fixSqrt() {
         // 0.5
         // 0.7071067811865476
         // 0.8408964152537146
-        console.log(x);
+        log(x);
         // 0.9999999999999997
         // 0.9999999999999998
         // 0.9999999999999999
@@ -378,7 +384,7 @@ fixSqrt();
 ```js
 function fix(f, x) {
     do {
-        console.log(x);
+        log(x);
     } while (x !== (x = f(x)));
 
     return x;
@@ -441,85 +447,6 @@ const twin = JSON.parse(str);          //  { surename: 'Eich', year: 1961 }
 - Quotation marks around keys are:
   - optional in literals
   - mandatory in JSON
-
-### Class objects
-
-```js
-class Account {
-    static instanceCounter = 0;
-
-    constructor(initialBalance, accountId) {
-        this.balance = initialBalance;
-        this.id = accountId;
-        Account.instanceCounter += 1;
-    }
-
-    deposit(amount) {
-        this.balance += amount;
-    }
-
-    getBalance() {
-        return this.balance;
-    }
-}
-
-const account = new Account(1000, 42);
-
-account.deposit(234);
-account.getBalance() // 1234
-```
-
-### Syntax sugar
-
-> Even though ECMAScript includes syntax for class definitions,
-> **[ECMAScript objects](https://tc39.es/ecma262/#sec-objects) are not fundamentally class-based**
-> such as those in C++, Smalltalk, or Java
-
-- The `class Account` example desugars to:
-
-```js
-function Account(initialBalance, accountId) {
-    this.balance = initialBalance;
-    this.id = accountId;
-    Account.instanceCounter += 1;
-}
-
-Account.instanceCounter = 0;
-
-Account.prototype.deposit = function (amount) {
-    this.balance += amount;
-};
-
-Account.prototype.getBalance = function () {
-    return this.balance;
-};
-```
-
-- Key points to remember:
-  - `new T()` objects store fields
-  - `T.prototype` object stores methods
-  - `new T().__proto__ === T.prototype`
-  - `T` object stores static fields
-- Less rigid than the `class` keyword may suggest:
-
-```js
-const account = new Account(1000, 42);
-
-// add field to object
-account.audited = true;
-
-// delete field from object
-delete account.id;
-
-// deactivate method for object
-account.deposit = undefined;
-
-// delete method from class
-delete Account.prototype.deposit;
-
-// change an object's class after creation
-account.__proto__ = SavingsAccount.prototype;
-```
 
 ### Dynamic maps
 
@@ -584,19 +511,23 @@ primes.pop();        // [ 2, 3, 5, 7 ]
 ### Iteration
 
 ```js
+const primes = [ 2, 3, 5, 7 ];
+
+
 for (let i = 0; i < primes.length; ++i) {
-    console.log(primes[i]);
+    log(primes[i]);
 }
 
+                 //
 for (const value of primes) {
-                 // 2, 3, 5, 7
-    console.log(value);
+    log(value);  // 2, 3, 5, 7
 }
 
+                 //
 for (const index in primes) {
-                 // '0', '1', '2', '3'
-    console.log(index);
+    log(index);  // '0', '1', '2', '3'
 }
+
 
 primes.forEach(function (value, index, array) {
     array[index] = -value;
@@ -606,13 +537,24 @@ primes.forEach(function (value, index, array) {
 ### Sorting
 
 ```js
+const primes = [ 2, 3, 5, 7, 11, 13, 17, 19 ];
+
+
 // sort by toString() value
-primes.sort();
-// [ 11, 13, 17, 19, 2, 3, 5, 7 ]
+
+primes.sort();                // [ 11, 13, 17, 19, 2, 3, 5, 7 ]
+
 
 // sort by numeric value
-primes.sort((a, b) => a - b);
-// [ 2, 3, 5, 7, 11, 13, 17, 19 ]
+
+primes.sort((a, b) => a - b); // [ 2, 3, 5, 7, 11, 13, 17, 19 ]
+
+
+function numerically(a, b) {
+    return a - b;
+}
+
+primes.sort(numerically);     // [ 2, 3, 5, 7, 11, 13, 17, 19 ]
 ```
 
 ### Functional

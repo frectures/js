@@ -67,6 +67,6 @@ for (const date of allDatesIn(`
 Brendan Eich was born on July 4th 1961.
 Node.js was first released on May 27, 2009.
 `)) {
-    console.log(date); // { month: 'July', day: 4, year: 1961 }
-}                      // { month: 'May', day: 27, year: 2009 }
+    log(date); // { month: 'July', day: 4, year: 1961 }
+}              // { month: 'May', day: 27, year: 2009 }
 ```
