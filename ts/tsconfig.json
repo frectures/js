@@ -5,7 +5,7 @@
   "compilerOptions": {
     "outDir": "./out",
     "target": "ESNext",
-    "lib": ["DOM"],
+    "lib": ["ESNext", "DOM"],
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noEmitOnError": false,
