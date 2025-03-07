@@ -470,6 +470,29 @@ a !== b // true; 2 objects, not 1
 
 ## Modules
 
+> **Exercise:**
+> - Move your JavaScript code from `projects/01 password/index.html` into its own `index.js` file
+> - before:
+
+```html
+</body>
+<script src="sha1.js"></script>
+<script>
+// ... your JavaScript code ...
+// CUT and PASTE into index.js
+</script>
+</html>
+```
+
+> - after:
+
+```html
+</body>
+<script src="sha1.js"></script>
+<script src="index.js"></script>
+</html>
+```
+
 ### Problem
 
 - `.html` files traditionally “import” all required `.js` files:
@@ -561,18 +584,28 @@ console.log(trig.distance(3, 4));
 | install (once, from anywhere)  | `npm install -g http-server` | `sudo apt install webfs` |
 | serve (from project directory) | `http-server`                | `webfsd -F -p 8080`      |
 
-### HTML `script` tag
+> **Exercise:**
+> - Convert `projects/01 password` to modules:
+>   - Which function(s) inside `sha1.js` are required by others? Add `export`(s) and `import`(s)
+>   - Which function(s) inside `index.js` are required by others? Add `export`(s)
+>   - Replace both `<script src="...">` with a single `<script type="module" src="...">`
+> - Start `http-server`
+> - Browse `localhost:8080`
+>   - Try some passwords; it should no longer work
+>   - Open the developer console (F12)
+>   - You should see `ReferenceError: yourCallbackFunction is not defined` messages
+>   - The next section describes how to fix it
 
-- Execute all JavaScript code inside a module:
+### `onclick` and friends
 
-```html
-<script type="module" src="filename.js">
-```
-
-- ⚠️ Exported module functions are invisible to HTML tag attributes:
+- Exported module functions are invisible to HTML tag attributes:
 
 ```html
 <button onclick="callback()">I have never met this callback in my life</button>
+        ////////////////////
+
+
+<script type="module" src="index.js"></script>
 ```
 
 - Import and register the callback inside a module script instead:
@@ -580,15 +613,13 @@ console.log(trig.distance(3, 4));
 ```html
 <button id="button">Of course I know him</button>
 
+
 <script type="module">
-import { callback } from "filename.js";
+import { callback } from "index.js";
 
 document.getElementById("button").onclick = callback;
-</script>
+</script>                         //////////////////
 ```
-
-> **Exercise:**
-> - Convert `projects/01 password` to modules
 
 ## Privacy
 
