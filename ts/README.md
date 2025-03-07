@@ -109,7 +109,26 @@ const json = await response.json() as Joke;
 - And `json.fred` warns:
   - `Property 'fred' does not exist on type 'Joke'`
 
-> **Exercise:** Convert `projects/01 password` from JavaScript to TypeScript
+> **Exercise:**
+> - Convert `projects/01 password` from JavaScript to TypeScript:
+>   - Copy `.js` files from `projects/01 password/` to `ts/src/`
+>   - Rename the new `.js` files to `.ts`
+>   - Copy `index.html` from `projects/01 password/` to `ts/`
+>   - Change `<script ... src="index.js">` to `<script ... src="out/index.js">`
+> - Open a terminal inside the `ts/` folder
+> - Run `npm install` to install the TypeScript compiler
+> - Run `npx tsc --watch` to start the TypeScript compiler
+>   - The compiler will report lots of missing types
+>   - But `localhost:8080` should still work
+> - Add the missing types inside `sha1.ts`:
+>   - `function sha1hex(str: string): string`
+>   - `function rotateLeft(x: number, n: number): number`
+>   - `function hex32(x: number): string`
+> - Add the missing types inside `index.ts`
+> - All `document.getElementById("...").property` accesses are problematic
+>   - because the compiler cannot possibly know whether those elements will exist (and what properties they will have)
+>   - Fix `Property 'value' does not exist on type 'HTMLElement'` by casting: `(document.getElementById("textInput") as HTMLInputElement).value`
+>   - Fix `Object is possibly 'null'` with an exclamation mark: `document.getElementById("textInput")!.onkeyup`
 
 ### Union types
 
