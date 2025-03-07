@@ -394,15 +394,82 @@ fix(Math.cos, 0.0);
 
 fix(Math.sqrt, 0.5);
 
-fix(function (x) { return x/2; }, 1.0);
+fix(function (x) { return x / 2; }, 1.0);
+```
+
+- A more practical example, binary search:
+
+```js
+// Finds, in logarithmic time, the ONE and ONLY index between 0 (inclusive)
+// and n (exclusive) where the predicate switches from false to true:
+//
+// fffffttttt
+// 0    ^    n
+function binarySearch(n, predicate) {
+
+    let left = 0;
+    let right = n - 1;
+
+    while (left <= right) {
+        const middle = (left + right) >>> 1;
+
+        if (predicate(middle)) {
+            right = middle - 1;
+        } else {
+            left = middle + 1;
+        }
+    }
+    return left;
+}
+
+
+const grades = [6.0, 5.3, 5.0, 4.7, 4.3, 4.0, 3.7, 3.3, 3.0, 2.7, 2.3, 2.0, 1.7, 1.3, 1.0, 0.7];
+
+function gradeToPoints(grade) {
+    return binarySearch(16, function (i) {
+        return grade >= grades[i];
+    });
+}
+
+
+const consonants = "BCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz";
+
+function isConsonant(charCode) {
+    const index = binarySearch(42, function (i) {
+        return charCode <= consonants.charCodeAt(i);
+    });
+    return charCode === consonants.charCodeAt(index);
+}
+```
+
+> **Exercise:**
+> - Finish the implementation of `isTwoDigitPrime`, using `binarySearch`:
+
+```js
+const primes = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+
+function isTwoDigitPrime(number) {
+    // ...
+}
 ```
 
 ### Arrow functions
 
 ```js
-fix((x) => x/2, 1.0);
+fix(function (x) { return x / 2; }, 1.0);
 
-fix( x  => x/2, 1.0);
+fix(         (x)   =>     x / 2   , 1.0);
+fix(          x    =>     x / 2   , 1.0);
+
+
+function gradeToPoints(grade) {
+    return binarySearch(16, i => grade >= grades[i]);
+}
+
+function isConsonant(charCode) {
+    const index = binarySearch(42, i => charCode <= consonants.charCodeAt(i));
+    return charCode === consonants.charCodeAt(index);
+}
 ```
 
 - JavaScript hipsters prefer arrow functions everywhere:
