@@ -322,6 +322,91 @@ const average2 = function (x, y) {
 
 ### Higher-order functions
 
+- Higher-order functions accept (or return) other functions
+- For example, `array.map(f)` applies `f` to all `array` elements:
+
+```js
+const primes = [ 2, 3, 5, 7 ];
+
+function square(x) {
+    return x * x;
+}
+
+primes.map(square);        // [ 4, 9, 25, 49 ]
+
+primes.map(function (x) {  // [ 4, 9, 25, 49 ]
+    return x * x;
+});
+
+primes.map((x) => x * x);  // [ 4, 9, 25, 49 ]
+
+primes.map( x  => x * x);  // [ 4, 9, 25, 49 ]
+```
+
+- A custom `map` implementation could look like this:
+
+```js
+                    //
+function map(array, f) {
+    const result = [];
+
+    for (const x of array) {
+        result.push(f(x));
+    }              //
+
+    return result;
+}
+
+map([ 2, 3, 5, 7 ], x => x * x); // [ 4, 9, 25, 49 ]
+```
+
+- Other popular higher-order functions are `filter` and `reduce`:
+
+```js
+const primes = [ 11, 2, 3, 13, 5, 7, 17, 19 ];
+
+
+function isSingleDigitNumber(x) {
+    return x < 10;
+}
+
+primes.filter(isSingleDigitNumber); // [ 2, 3, 5, 7 ]
+
+primes.filter(x => x < 10);         // [ 2, 3, 5, 7 ]
+
+
+function plus(x, y) {
+    return x + y;
+}
+
+primes.reduce(plus, 0);          // 0 + 11 + 2 + 3 + 13 + 5 + 7 + 17 + 19 = 77
+
+primes.reduce((sumSoFar, currentNumber) => sumSoFar + currentNumber, 0); // 77
+```
+
+> **Exercise:**
+> - Implement the custom `filter` function below
+> - Implement the custom `reduce` function below
+
+```js
+function filter(array, predicate) {
+    const result = [];
+
+    // ...
+
+    return result;
+}
+
+filter([ 11, 2, 3, 13, 5, 7, 17, 19 ], x => x < 10); // [ 2, 3, 5, 7 ]
+
+
+function reduce(array, update, result) {
+    // ...
+}
+
+reduce([ 11, 2, 3, 13, 5, 7, 17, 19 ], (x, y) => x + y, 0); // 77
+```
+
 ![](img/chain.jpg)
 
 ## Objects
@@ -394,7 +479,7 @@ countWords("Most JavaScript objects have a special __proto__ property related to
 ## Arrays
 
 ```js
-const primes = [2, 3, 5, 7];
+const primes = [ 2, 3, 5, 7 ];
 typeof primes                      // 'object'
 Object.getOwnPropertyNames(primes) // [ '0', '1', '2', '3', 'length' ]
 
@@ -416,8 +501,6 @@ primes.pop();        // [ 2, 3, 5, 7 ]
 - There are no “array index out of bounds” errors:
   - Reading from such an index gives `undefined`
   - Writing to such an index grows the array
-
-> **Exercise:** Write a function `divisors(x)` that returns an array containing all divisors of `x`
 
 ### Iteration
 
@@ -448,7 +531,7 @@ primes.forEach(function (value, index, array) {
 ### Sorting
 
 ```js
-const primes = [ 2, 3, 5, 7, 11, 13, 17, 19 ];
+const primes = [ 11, 2, 3, 13, 5, 7, 17, 19 ];
 
 
 // sort by toString() value
@@ -461,36 +544,9 @@ primes.sort();                // [ 11, 13, 17, 19, 2, 3, 5, 7 ]
 primes.sort((a, b) => a - b); // [ 2, 3, 5, 7, 11, 13, 17, 19 ]
 
 
-function numerically(a, b) {
+function ascending(a, b) {
     return a - b;
 }
 
-primes.sort(numerically);     // [ 2, 3, 5, 7, 11, 13, 17, 19 ]
+primes.sort(ascending);       // [ 2, 3, 5, 7, 11, 13, 17, 19 ]
 ```
-
-### Functional
-
-```js
-const people = [
-    { forename: "Alan",   surename: "Turing",     year: 1912 },
-    { forename: "Alan",   surename: "Kay",        year: 1940 },
-    { forename: "Bjarne", surename: "Stroustrup", year: 1950 },
-    { forename: "Brian",  surename: "Kernighan",  year: 1942 },
-    { forename: "Dennis", surename: "Ritchie",    year: 1941 },
-    { forename: "James",  surename: "Gosling",    year: 1955 },
-];
-
-const whippersnappers  = people.filter(person => person.year >= 1950);
-
-const years            = people.map(person => person.year);
-                      // [ 1912, 1940, 1950, 1942, 1941, 1955 ]
-
-const yearSum          = people.reduce((sumSoFar, person) => sumSoFar + person.year,  0);
-                      // 0 + 1912 + 1940 + 1950 + 1942 + 1941 + 1955
-
-const sortedByYear     = people.toSorted((a, b) => a.year - b.year);
-
-const sortedBySurename = people.toSorted((a, b) => a.surename.localeCompare(b.surename));
-```
-
-> **Exercise:** Simplify the function `isPerfectNumber(x)` with the previous function `divisors` and the `reduce` method
