@@ -621,9 +621,9 @@ document.getElementById("button").onclick = callback;
 </script>                         //////////////////
 ```
 
-## Privacy
+## Encapsulation
 
-- Before 2022, JavaScript had no private properties:
+- Before ES2022, fields were always public:
 
 ```js
 class Account {
@@ -642,12 +642,12 @@ class Account {
 
 const a = new Account(123);
 
-a.balance = 1000000; // whoops
+a.balance = 1000000; // Who wants to be a millionaire?
 ```
 
-### ES2022
+### ES2022 `#`
 
-- Since 2022, private properties are marked with the `#` prefix:
+- Since ES2022, the `#` prefix marks private fields:
 
 ```js
 class Account {
@@ -673,30 +673,30 @@ a.#balance = 1000000;
 // Property '#balance' is not accessible outside class 'Account' ...
 ```
 
-- Many JavaScript programmers are not aware of this syntax, yet
+- recent feature
+- unique syntax
 
-### ES2015
+### ES2015 `WeakMap`
 
-- Between 2015 and 2022, private properties could be simulated with modules and `WeakMap`s:
+- Since ES2015, encapsulation can be achieved with `WeakMap`s inside modules
+- one `WeakMap` per property:
 
 ```js
 // file Account.js
 
-const properties = new WeakMap(); // unexported, i.e. inaccessible outside the module
+const _Account_balance = new WeakMap(); // unexported, i.e. inaccessible outside the module
 
 export class Account {
     constructor(initialBalance) {
-        properties.set(this, {
-            balance: initialBalance,
-        });
+        _Account_balance.set(this, initialBalance);
     }
 
     deposit(amount) {
-        properties.get(this).balance += amount;
+        _Account_balance.set(this, _Account_balance.get(this) + amount);
     }
 
     getBalance() {
-        return properties.get(this).balance;
+        return _Account_balance.get(this);
     }
 }
 ```
@@ -708,27 +708,51 @@ import { Account } from './Account.js';
 
 const a = new Account(123);
 
-properties.get(this).balance = 1000000;
-// Uncaught ReferenceError: properties is not defined
+_Account_balance.set(this, 1000000);
+// Uncaught ReferenceError: _Account_balance is not defined
+```
+
+- one `WeakMap` per class:
+
+```js
+// file Account.js
+
+const _Account = new WeakMap(); // unexported, i.e. inaccessible outside the module
+
+export class Account {
+    constructor(initialBalance) {
+        _Account.set(this, {
+            balance: initialBalance,
+        });
+    }
+
+    deposit(amount) {
+        _Account.get(this).balance += amount;
+    }
+
+    getBalance() {
+        return _Account.get(this).balance;
+    }
+}
 ```
 
 - Why `WeakMap` instead of `Map`?
   - A normal `Map` would keep growing with every `new Account`
   - But a `WeakMap` can shrink during garbage collection
-- This approach to privacy is not widespread
+- TypeScript transpiles `#` to `WeakMap` for targets older than ES2022
 
 ### 1995 Closures
 
-- Closures were always powerful enough to simulate privacy:
+- Encapsulation has always been achievable with closures:
 
 ```js
 function createAccount(balance) {
     return {
-        deposit: function(amount) {
+        deposit(amount) {
             balance += amount;
         },
 
-        getBalance: function() {
+        getBalance() {
             return balance;
         },
     };
@@ -741,16 +765,19 @@ a.getBalance()       // 123
 a.balance            // 1000000
 ```
 
-- Note how `deposit` and `getBalance` close over `balance`
-  - That `balance` is *not* an object property!
-- Also note the low number of keywords
+- surprising absence of familiar OOP keywords:
+  - no `class`
+  - no `this`
+  - no `new`
+- `balance` is *not* an object property!
+  - `deposit` and `getBalance` *close over* `balance` instead
 - Lisp programmers love this style
   - Other programmers... usually don't
 - In practice, programmers either
-  - just don't care about privacy that much, or
-  - use `private` in TypeScript:
+  - just don't care about encapsulation that much, or
+  - use `private` in TypeScript
 
-### TypeScript
+### 2012 TypeScript
 
 ```ts
 class Account {
@@ -785,13 +812,47 @@ a.balance = 1000000;
 // Property 'balance' is private and only accessible within class 'Account'
 ```
 
-- This approach to privacy is very popular
+- This approach to encapsulation is very popular
   - Everybody knows `private` from some other language
 - Note that `private` is only checked at compile-time
-  - If you want to shoot yourself in the foot, `private` can be circumvented:
+  - If you want to shoot yourself in the foot:
 
 ```ts
 const a = new Account(123);
 
 (a as any).balance = 1000000; // Well, if you insist...
+```
+
+### Closures + TypeScript
+
+- When Lisp programmers write TypeScript:
+
+```ts
+function createAccount(balance: number) {
+    return {
+        deposit(amount: number): void {
+            balance += amount;
+        },
+
+        getBalance(): number {
+            return balance;
+        },
+    };
+}
+
+function f(account) {
+           ///////
+}
+```
+
+- How can they make `f` type-safe?
+- What should the type of `account` be?
+- Well, whatever `createAccount` returns:
+
+```ts
+type Account = ReturnType<typeof createAccount>;
+
+function f(account: Account) {
+           ////////////////
+}
 ```
