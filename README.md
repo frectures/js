@@ -300,25 +300,143 @@ do {
 
 ![](img/sicpjs.webp)
 
+### Arguments
+
+- Every parameter is initialized with its corresponding argument:
+
 ```js
-function average1(x, y) {
-    return (x + y) / 2;
+function join(array, separator, prefix, suffix) {
+
+    log("separator: " + separator);
+    log("   prefix: " + prefix);
+    log("   suffix: " + suffix);
+    log("---------");
 }
 
-const average2 = function (x, y) {
-    return (x + y) / 2;
-};
+const treats = [ "peanuts", "chocolate", "pretzels" ];
+
+join(treats, ", ", "[", "]");
 ```
 
-- `function average1` does not prevent accidental reassignment: `average1 = "😱";`
-- `const average2 = function` cannot be called above its definition
-- Missing arguments are initialized to `undefined`
-- Extra arguments are ignored
-- Implicit `return undefined;` at the bottom
+- `join` implicitly returns `undefined`
+- because no `return` statement is executed
 
-> **Exercise:** Write a function `isPerfectNumber(x)`
-> - The divisors of a perfect number add up to twice that number
-> - The first 4 perfect numbers are 6, 28, 496 and 8128
+### Default arguments
+
+- Missing arguments are `undefined`:
+
+```js
+// 2 indistinguishable calls:
+join(treats, ", ");
+join(treats, ", ", undefined, undefined);
+
+// 2 indistinguishable calls:
+join(treats);
+join(treats, undefined, undefined, undefined);
+```
+
+- Manually replace `undefined` with sensible defaults:
+
+```js
+function join(array, separator, prefix, suffix) {
+
+    if (separator === undefined) {
+        separator = ", ";  // replace undefined 
+    }
+
+    prefix = prefix ?? ""; // replace null or undefined
+
+    suffix = suffix || ""; // replace all falsy values
+
+    // ...
+}
+```
+
+- Automatically replace `undefined` since ES2015:
+
+```js
+                               //////         ////         ////
+function join(array, separator = ", ", prefix = "", suffix = "") {
+
+    log("separator: " + separator);
+    log("   prefix: " + prefix);
+    log("   suffix: " + suffix);
+    log("---------");
+}
+```
+
+### Named arguments
+
+- JavaScript does not have named arguments
+- But object literals `{ key: value, }` work just fine:
+
+```js
+function join(array, options) {
+    
+    log("separator: " + options.separator);
+    log("   prefix: " + options.prefix);
+    log("   suffix: " + options.suffix);
+    log("---------");
+}
+
+join(treats,
+{
+    prefix:    "[",
+    separator: ", ",
+    suffix:    "]",
+}); ///////////////
+```
+
+- The `join` signature no longer reveals the available options
+- Accessing every option with `options.` is quite cumbersome
+- Mitigate both problems with *destructuring*:
+
+```js
+                     /////////////////////////////
+function join(array, { prefix, separator, suffix }) {
+
+    log("separator: " + separator);
+    log("   prefix: " + prefix);
+    log("   suffix: " + suffix);
+    log("---------");   //////
+}
+
+join(treats,
+{
+    prefix:    "[",
+    separator: ", ",
+    suffix:    "]",
+});
+```
+
+- Replace missing options by *spreading* the passed options into default options:
+
+```js
+function join(array, options) {
+
+    const { prefix, separator, suffix } =
+    {
+        prefix:    "[",
+        separator: ", ",
+        suffix:    "]",
+
+        ...options  // spread operator
+    };
+
+    // ...
+}
+
+join(treats,
+{
+    separator: " and ",
+});
+```
+
+> **Exercise:**
+> - Write a function `isPerfectNumber(x)`
+>   - The divisors of a perfect number add up to twice that number
+>   - The first 4 perfect numbers are 6, 28, 496 and 8128
+> - 🏆 Implement one of the `join` functions above
 
 ### Higher-order functions
 
@@ -346,13 +464,13 @@ primes.map( x  => x * x);  // [ 4, 9, 25, 49 ]
 - A custom `map` implementation could look like this:
 
 ```js
-                    //
+                   ///
 function map(array, f) {
     const result = [];
 
-    for (const x of array) {
-        result.push(f(x));
-    }              //
+    for (let i = 0; i < array.length; ++i) {
+        result.push(f(array[i], i, array));
+    }               /////////////////////
 
     return result;
 }
@@ -360,19 +478,23 @@ function map(array, f) {
 map([ 2, 3, 5, 7 ], x => x * x); // [ 4, 9, 25, 49 ]
 ```
 
+- Note how `map` passes 3 arguments to `f`
+  - element, index, array
+- But `x => x * x` defines only 1 parameter
+  - JavaScript ignores extraneous arguments
 - Other popular higher-order functions are `filter` and `reduce`:
 
 ```js
 const primes = [ 11, 2, 3, 13, 5, 7, 17, 19 ];
 
 
-function isSingleDigitNumber(x) {
+function smallerThanTen(x) {
     return x < 10;
 }
 
-primes.filter(isSingleDigitNumber); // [ 2, 3, 5, 7 ]
+primes.filter(smallerThanTen); // [ 2, 3, 5, 7 ]
 
-primes.filter(x => x < 10);         // [ 2, 3, 5, 7 ]
+primes.filter(x => x < 10);    // [ 2, 3, 5, 7 ]
 
 
 function plus(x, y) {

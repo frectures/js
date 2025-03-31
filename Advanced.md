@@ -2,42 +2,41 @@
 
 ## Functions
 
-### Functions accepting functions
+### Functions as arguments
 
 ```js
-function square(x) {
-    return x * x;
-}
+                       /////////
+function filter(array, predicate) {
+    const result = [];
 
-square(3) // 9
-
-
-function twice(f, x) {
-    return f(f(x));
-}
-
-twice(square, 3) // 81
-```
-
-### Closures: Functions returning functions
-
-```js
-function twice(f) {
-    return function (x) {
-        return f(f(x));
+    for (let i = 0; i < array.length; ++i) {
+        if (predicate(array[i], i, array)) result.push(array[i]);
+            /////////////////////////////
     }
+
+    return result;
 }
 
-const hypercube = twice(square);
+const primes = [ 11, 2, 3, 13, 5, 7, 17, 19 ];
 
-hypercube(3) // 81
-
-twice(square)(3) // 81
+filter(primes, x => x < 10); // [ 2, 3, 5, 7 ]
+               ///////////
 ```
 
-- Inner functions have access to variables of their outer function
-- Even after the outer function (here `twice`) has returned!
-- JavaScript even allows modification of the outer variables:
+### Functions as return values
+
+```js
+function smallerThan(limit) {
+    return x => x < limit;
+}          //////////////
+
+filter(primes, smallerThan(10)); // [ 2, 3, 5, 7 ]
+               ///////////////
+```
+
+- Inner functions have *access* to variables of their outer function
+- Even after the outer function (here `smallerThan`) has returned!
+- JavaScript even allows *modification* of the outer variables:
 
 ```js
 function makeCounter() {
@@ -52,7 +51,7 @@ const a = makeCounter();
 const b = makeCounter();
 
 // 1    2         3
-[  a(), a(), b(), a(), b(), b()  ] // [1, 2, 1, 3, 2, 3]
+[  a(), a(), b(), a(), b(), b()  ]  // [1, 2, 1, 3, 2, 3]
 //           1         2    3
 ```
 
@@ -163,11 +162,11 @@ function* finiteCounter(from, to) {
 
 const counter = finiteCounter(7, 9);
 
-counter.next() // {done: false, value: 7}
-counter.next() // {done: false, value: 8}
-counter.next() // {done: false, value: 9}
+counter.next(); // {done: false, value: 7}
+counter.next(); // {done: false, value: 8}
+counter.next(); // {done: false, value: 9}
 
-counter.next() // {done: true,  value: undefined}
+counter.next(); // {done: true,  value: undefined}
 ```
 
 ## Objects
