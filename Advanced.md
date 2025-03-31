@@ -172,6 +172,291 @@ counter.next() // {done: true,  value: undefined}
 
 ## Objects
 
+> Even though ECMAScript includes syntax for class definitions,  
+> **[ECMAScript objects](https://tc39.es/ecma262/#sec-objects) are *not* fundamentally class-based**  
+> (such as those in C++, Smalltalk, or Java).
+
+- Spot the difference:
+
+```js
+const britisch = {
+    Erdnuss: "peanut",
+    Keks: "biscuit",
+    Kremeis: "ice cream",
+    Pommes: "potato chips",
+    Schokolade: "chocolate",
+};
+
+const amerikanisch = {
+    Erdnuss: "peanut",
+    Keks: "biscuit",
+    Kremeis: "ice cream",
+    Pommes: "french fries",
+    Schokolade: "chocolate",
+};
+```
+
+- Most words are the same
+- Isn't this a waste of memory?
+
+### Object inheritance
+
+- `amerikanisch` can *inherit* most words from `britisch`:
+
+```js
+const britisch = {
+    Erdnuss: "peanut",
+    Keks: "biscuit",
+    Kremeis: "ice cream",
+    Pommes: "potato chips",
+    Schokolade: "chocolate",
+};
+
+const amerikanisch = {
+    __proto__: britisch, // inheritance
+
+    Pommes: "french fries",
+};
+```
+
+- How does inheritance affect word access?
+
+```js
+amerikanisch.Pommes             // french fries
+amerikanisch.Erdnuss            // peanut
+amerikanisch.__proto__.Erdnuss  // peanut
+
+amerikanisch.Keks = "cookie";
+amerikanisch.Keks               // cookie
+    britisch.Keks               // biscuit
+
+amerikanisch.Schokolade += "!!!";
+amerikanisch.Schokolade         // chocolate!!!
+    britisch.Schokolade         // chocolate
+```
+
+- 👁️ `obj.key`
+  - starts at `obj` and climbs the `__proto__` chain
+  - until `key` is found, or `__proto__` is `null`
+- ✍️ `obj.key = value`
+  - ignores `obj.__proto__` completely
+- ⚠️ `obj.key += value`
+  - just syntax sugar for ✍️ `obj.key = obj.key + value` 👁️
+
+### The mother of all objects
+
+- The default `__proto__` is `Object.prototype`:
+
+```js
+const britisch = {
+    __proto__: Object.prototype, // default
+
+    // ...
+};
+
+const amerikanisch = {
+    __proto__: britisch,
+
+    // ...
+};
+```
+
+- `Object.prototype` contains half a dozen functions:
+
+```js
+Object.prototype = {
+    hasOwnProperty(key) {
+        // ...
+    },
+
+    isPrototypeOf(child) {
+        // ...
+    },
+
+    toString() {
+        // ...
+    },
+
+    // ...
+
+    __proto__: null, // orphan
+};
+```
+
+- `for in` includes inherited properties:
+
+```js
+for (const deutsch in amerikanisch) {
+    if (amerikanisch.hasOwnProperty(deutsch)) {
+        log(`Die Amis haben ein eigenes Wort für ${deutsch}.`);
+    } else {
+        log(`Briten und Amis haben dasselbe Wort für ${deutsch}.`);
+    }
+}
+```
+
+### ES2015 `class` syntax
+
+> [Nordic.js 2014 • Douglas Crockford - The Better Parts](https://www.youtube.com/watch?v=PSGEjv3Tqo0):
+> `class` was *the* most requested new feature in JavaScript.  
+> All of the requests came from **Java programmers** who *have* to program in JavaScript and don't want to learn how to do that.  
+> They wanted something that *looks* like Java so that they could be **more comfortable**.  
+
+```js
+class Account {
+    constructor(balance) {
+        this.balance = balance;
+    }
+
+    deposit(amount) {
+        this.balance += amount;
+    }
+
+    getBalance() {
+        return this.balance;
+    }
+}
+
+const a = new Account(100);
+
+a.deposit(23);
+a.getBalance()     // 123
+```
+
+### What is `Account`, really?
+
+```js
+a  instanceof     Account      // true... Is Account a class?
+
+a.constructor === Account      // true... Is Account a constructor?
+
+           typeof Account      // "function"... It's a function!
+
+                  Account(42)  // TypeError: class constructors must be invoked with 'new'
+
+              new Account(42); // { balance: 42 }
+```
+
+### But where are the methods?
+
+```js
+      a            // { balance: 123 }
+
+      a.__proto__  // { constructor, deposit, getBalance }
+
+Account.prototype  // { constructor, deposit, getBalance }
+```
+
+- `new Account(123)` does 2 things:
+  1. creates fresh object `{ __proto__: Account.prototype }`
+  2. runs constructor function
+- key points to remember:
+  - `new T()` objects store fields
+  - `T.prototype` object stores methods
+  - `new T().__proto__ === T.prototype`
+  - `new T().constructor === T`
+
+### 1995 `prototype` syntax
+
+<table>
+<tr>
+<th>prototype</th>
+<th>class</th>
+</tr>
+<tr>
+<td>
+
+```js
+function Account(balance) {
+    this.balance = balance;
+}
+
+// Account.prototype = { constructor: Account };
+
+Account.prototype.deposit = function (amount) {
+    this.balance += amount;
+};
+
+Account.prototype.getBalance = function () {
+    return this.balance;
+};
+
+const a = new Account(100);
+
+a.deposit(23);
+a.getBalance()     // 123
+```
+
+</td>
+<td>
+
+```js
+class Account {
+    constructor(balance) {
+        this.balance = balance;
+    }
+
+    deposit(amount) {
+        this.balance += amount;
+    }
+
+    getBalance() {
+        return this.balance;
+    }
+}
+
+const a = new Account(100);
+
+a.deposit(23);
+a.getBalance()     // 123
+```
+
+</td>
+</tr>
+</table>
+
+### A false sense of rigidity
+
+- `class` is mostly syntax sugar for `prototype`
+- In particular, `class` is no more *rigid* than `prototype`:
+
+```js
+class Account {
+    // ...
+}
+
+const a = new Account(123);
+
+// add field to object
+a.audited = true;
+
+// delete field from object
+delete a.balance;
+
+// deactivate method for object
+a.deposit = undefined;
+
+// delete method from class
+delete Account.prototype.deposit;
+
+// change object's class after creation
+a.__proto__ = SavingsAccount.prototype;
+```
+
+- 🕷️ With great power comes great responsibility
+- 🕵️ Quite useful for testing (mock, spy)
+
+### What's `this` inside functions?
+
+| Function call syntax      | `this` value                 |
+| ------------------------- | ---------------------------- |
+| `f(x, y, z)`              | `undefined` or global object |
+| `obj.f(x, y, z)`          | `obj`                        |
+| `new F(x, y, z)`          | `{ __proto__: F.prototype }` |
+| `f.apply(obj, [x, y, z])` | `obj`                        |
+| `f.call(obj, x, y, z)`    | `obj`                        |
+| `f.bind(obj, x)(y, z)`    | `obj`                        |
+
 ### Callbacks and `this`
 
 ```js
@@ -225,11 +510,16 @@ class Account {
 
 ### Polyfills
 
-- Since 2023, arrays have a `toSorted` method:
+- Since ES2023, arrays have a `toSorted` method:
 
 ```js
-const sortedByYear = people.toSorted((a, b) => a.year - b.year);
-                            ////////
+const primes = [ 11, 2, 3, 13, 5, 7, 17, 19 ];
+
+const sorted = primes.toSorted((a, b) => a - b);
+
+primes      // [ 11, 2, 3, 13, 5, 7, 17, 19 ]
+
+sorted      // [ 2, 3, 5, 7, 11, 13, 17, 19 ]
 ```
 
 - Not all JavaScript environments provide `toSorted` yet
@@ -238,7 +528,7 @@ const sortedByYear = people.toSorted((a, b) => a.year - b.year);
 ```js
 if (Array.prototype.toSorted === undefined) {
     Array.prototype.toSorted = function (compare) {
-        const copy = this.clone(); // doesn't actually work; arrays have no clone method
+        const copy = [...this]; // spread operator
         copy.sort(compare);
         return copy;
     };
@@ -246,18 +536,17 @@ if (Array.prototype.toSorted === undefined) {
 ```
 
 > **Exercise:**
-> - Provide a `clone` method on arrays such that `a.clone()` works:
+> - Provide a `toReversed` method on arrays
+> - 🏆 Provide a `toReversed` method on strings
 
 ```js
-// Implement your array clone method here...
+// Implement your array toReversed method here...
 
-const a = [2, 3, 5, 7];
-const b = a.clone(); // ...such that this line of code works, as is
+const a = [ "peanuts", "and", "chocolate" ];
+const b = a.toReversed(); // ...such that this line of code works, unmodified
 
-a // [2, 3, 5, 7]
-b // [2, 3, 5, 7]
-
-a !== b // true; 2 objects, not 1
+a  // [ "peanuts", "and", "chocolate" ]
+b  // [ "chocolate", "and", "peanuts" ]
 ```
 
 ## Modules
