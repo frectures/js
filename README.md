@@ -275,17 +275,29 @@ for (let i = 0; i < s.length; ++i) {
 }
 
 
+// find the smallest integer without odd successor
+
 let x = 1;
 while (x + 1 > x) {
     x *= 2;
+    log(x);
 }
-log(`${x} is the smallest integer without odd successor`);
 
 
-let password;
+// log all 6 permutations of 3 numbers,
+// inspired by C++ std::next_permutation
+
+const numbers = [ 1, 2, 3 ];
 do {
-    password = readPassword();
-} while (password !== "Simsalabim");
+    log(numbers);
+    [ 1, 2, 3 ]
+    [ 1, 3, 2 ]
+    [ 2, 1, 3 ]
+    [ 2, 3, 1 ]
+    [ 3, 1, 2 ]
+    [ 3, 2, 1 ]
+} while (nextPermutation(numbers));
+    [ 1, 2, 3 ]
 ```
 
 > **Exercise:**
