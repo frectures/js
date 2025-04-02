@@ -10,8 +10,8 @@
 
 ### CORS issue
 
-- Now we want both buttons to work multiple times in a row
-- Study the result of https://xkcd.com/927/info.0.json in the browser
+- Where did those 3 image URLs come from?
+- Study the result of https://xkcd.com/927/info.0.json (and 928 and 926) in the browser
 - Unfortunately, the XKCD server won't allow `fetch("https://xkcd.com/927/info.0.json")` in your JavaScript code
 
 ### Install Node.js
@@ -35,6 +35,7 @@
 
 - Open `localhost:8080` in the browser
 - In your JavaScript code, `fetch("/927/info.0.json")` instead of the full URL
+- Now make the `next` and `prev` buttons work multiple times in a row
 
 ### Big leaps
 
