@@ -289,12 +289,12 @@ do {
 ```
 
 > **Exercise:**
-> 1. Write a `for` loop that logs all divisors of `42`
->    - Hint: `dividend % divisor === rest`
-> 2. Start with `x = 27` and write a `while` loop that logs `x` and transforms it once per iteration:
->    - If `x` is even, divide `x` by 2
->    - If `x` is odd, multiply `x` by 3 and increment
->    - Stop the loop when `x` reaches 1
+> - Start a loop at `x = 27` and transform `x` once per iteration:
+>   - If `x` is even, divide `x` by 2
+>   - If `x` is odd, multiply `x` by 3 and increment
+>   - log `x` after every change
+> - Stop the loop when `x` reaches 1
+> - How many numbers were logged in total?
 
 ## Functions
 
@@ -307,19 +307,13 @@ do {
 ```js
 function join(array, separator, prefix, suffix) {
 
-    log("separator: " + separator);
-    log("   prefix: " + prefix);
-    log("   suffix: " + suffix);
-    log("---------");
+    return prefix + array[0] + separator + array[1] + suffix;
 }
 
 const treats = [ "peanuts", "chocolate", "pretzels" ];
 
-join(treats, ", ", "[", "]");
+join(treats, " and ", "Yummy: ", "!");
 ```
-
-- `join` implicitly returns `undefined`
-- because no `return` statement is executed
 
 ### Default arguments
 
@@ -327,8 +321,8 @@ join(treats, ", ", "[", "]");
 
 ```js
 // 2 indistinguishable calls:
-join(treats, ", ");
-join(treats, ", ", undefined, undefined);
+join(treats, " and ");
+join(treats, " and ", undefined, undefined);
 
 // 2 indistinguishable calls:
 join(treats);
@@ -348,7 +342,7 @@ function join(array, separator, prefix, suffix) {
 
     suffix = suffix || ""; // replace all falsy values
 
-    // ...
+    return prefix + array[0] + separator + array[1] + suffix;
 }
 ```
 
@@ -358,10 +352,7 @@ function join(array, separator, prefix, suffix) {
                                //////         ////         ////
 function join(array, separator = ", ", prefix = "", suffix = "") {
 
-    log("separator: " + separator);
-    log("   prefix: " + prefix);
-    log("   suffix: " + suffix);
-    log("---------");
+    return prefix + array[0] + separator + array[1] + suffix;
 }
 ```
 
@@ -373,21 +364,18 @@ function join(array, separator = ", ", prefix = "", suffix = "") {
 ```js
 function join(array, options) {
     
-    log("separator: " + options.separator);
-    log("   prefix: " + options.prefix);
-    log("   suffix: " + options.suffix);
-    log("---------");
+    return options.prefix + array[0] + options.separator + array[1] + options.suffix;
 }
 
 join(treats,
 {
-    prefix:    "[",
-    separator: ", ",
-    suffix:    "]",
+    prefix:    "Yummy: ",
+    separator: " and ",
+    suffix:    "!",
 }); ///////////////
 ```
 
-- The `join` signature no longer reveals the available options
+- The `join` signature does not reveal the available options
 - Accessing every option with `options.` is quite cumbersome
 - Mitigate both problems with *destructuring*:
 
@@ -395,17 +383,14 @@ join(treats,
                      /////////////////////////////
 function join(array, { prefix, separator, suffix }) {
 
-    log("separator: " + separator);
-    log("   prefix: " + prefix);
-    log("   suffix: " + suffix);
-    log("---------");   //////
+    return prefix + array[0] + separator + array[1] + suffix;
 }
 
 join(treats,
 {
-    prefix:    "[",
-    separator: ", ",
-    suffix:    "]",
+    prefix:    "Yummy: ",
+    separator: " and ",
+    suffix:    "!",
 });
 ```
 
@@ -423,7 +408,7 @@ function join(array, options) {
         ...options  // spread operator
     };
 
-    // ...
+    return prefix + array[0] + separator + array[1] + suffix;
 }
 
 join(treats,
@@ -433,10 +418,15 @@ join(treats,
 ```
 
 > **Exercise:**
-> - Write a function `isPerfectNumber(x)`
->   - The divisors of a perfect number add up to twice that number
->   - The first 4 perfect numbers are 6, 28, 496 and 8128
-> - 🏆 Implement one of the `join` functions above
+> - So far, `join` always joins 2 array elements
+>   - Fix `join` so it joins `array.length` elements
+>   - Does it work if `array.length` is 1 or 0?
+> - Are you worried that `str = str + something` in a loop may have quadratic complexity?
+>   - Create a string of length 1 million via repeated concatenation of 1 character
+>   - Measure the elapsed milliseconds with 2 `Date.now()` calls (before and after)
+>   - Repeat the experiment with length 10 million
+>   - Is it ~10 times slower? linear complexity
+>   - Is it ~100 times slower? quadratic complexity
 
 ### Higher-order functions
 
