@@ -35,6 +35,10 @@
 
 - Open `localhost:8080` in the browser
 - In your JavaScript code, `fetch("/927/info.0.json")` instead of the full URL
+- ⚠️ If `fetch` still has CORS issues:
+  - Press `Ctrl F5` to clear cache
+  - Open private tab
+  - Try different browser
 - Now make the `next` and `prev` buttons work multiple times in a row
 
 ### Big leaps
@@ -49,6 +53,11 @@
 - Clicking on the previous and next *images* should have the same effect as clicking on the buttons
 - You can remove the buttons if you want to
 - How does your application behave if the current comic is the very first or last one?
+
+### 404 Comic not found
+
+- There is no XKCD comic number 404
+- Account for this oddity in your code
 
 ### Ratings
 
