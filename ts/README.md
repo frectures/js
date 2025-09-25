@@ -114,7 +114,7 @@ const json = await response.json() as Joke;
 >   - Copy `.js` files from `projects/01 password/` to `ts/src/`
 >   - Rename the new `.js` files to `.ts`
 >   - Copy `index.html` from `projects/01 password/` to `ts/`
->   - Change `<script ... src="index.js">` to `<script ... src="out/index.js">`
+>   - Change import from `"./index.js"` to `"./out/index.js"`
 > - Open a terminal inside the `ts/` folder
 > - Run `npm install` to install the TypeScript compiler
 > - Run `npx tsc --watch` to start the TypeScript compiler

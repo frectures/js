@@ -1,3 +1,5 @@
+const answer = 42;
+
 function welcome(users: string[]): void {
 
     const sortedUsers: string[] = users.toSorted();
@@ -7,4 +9,4 @@ function welcome(users: string[]): void {
     });
 }
 
-welcome(["Brendan", "Douglas", "Anders"]);
+welcome(["Brendan", "Douglas", "xyz"]);
