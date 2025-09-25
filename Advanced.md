@@ -695,7 +695,7 @@ console.log(trig.distance(3, 4));
 
 
 <script type="module">
-import { callback } from "index.js";
+import { callback } from "./index.js";
 
 document.getElementById("button").onclick = callback;
 </script>                         //////////////////
