@@ -1,0 +1,13 @@
+{
+  "include": [
+    "./src/**/*",
+  ],
+  "compilerOptions": {
+    "outDir": "./out",
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noEmitOnError": false,
+  },
+}
