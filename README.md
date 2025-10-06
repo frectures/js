@@ -735,7 +735,11 @@ async function f() {
 
 > **Exercise:**
 > - Fetch all joke categories from `https://api.chucknorris.io/jokes/categories`
+> - Ignore these controversial categories:
+>   - explicit
+>   - political
+>   - religion
 > - Fetch 1 joke per category from `https://api.chucknorris.io/jokes/random?category=insertCategoryHere`
-> - Log the joke texts, sorted alphabetically
-> - 🏆 Sort the jokes by date instead
+> - Log the joke `value`s, sorted alphabetically
+> - 🏆 Sort the jokes by `id` instead
 > - 🏆 Fetch the jokes in parallel with `Promise.all(...urls)`
