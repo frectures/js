@@ -406,19 +406,14 @@ join(treats,
 });
 ```
 
-- Replace missing options by *spreading* the passed options into default options:
+- Default values must be handled manually:
 
 ```js
-function join(array, options) {
+function join(array, { prefix, separator, suffix }) {
 
-    const { prefix, separator, suffix } =
-    {
-        prefix:    "[",
-        separator: ", ",
-        suffix:    "]",
-
-        ...options  // spread operator
-    };
+    prefix    = prefix    ?? "";
+    separator = separator ?? ", ";
+    suffix    = suffix    ?? "";
 
     return prefix + array[0] + separator + array[1] + suffix;
 }
