@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<button onclick="onbuttonclick()">Roll!</button>
+<hr>
+<textarea id="output" rows="25"></textarea>
+
+</body>
+<script>
+
+function clear() {
+    document.getElementById("output").value = "";
+}
+
+function append(x) {
+    document.getElementById("output").value += `${x}\n`;
+}
+
+function roll() {
+    return Math.floor(Math.random() * 6 + 1);
+}
+
+function disable() {
+    document.getElementById("output").disabled = true;
+}
+
+function enable() {
+    document.getElementById("output").disabled = false;
+}
+
+async function onbuttonclick() {
+    clear();
+    append("Start");
+    await d();
+    append("Finish");
+}
+
+async function d() {
+    await sleep(2000);
+    append(roll());
+
+    await sleep(2000);
+    append(roll());
+
+    await sleep(2000);
+    append(roll());
+}
+
+function c() {
+    return sleep(2000)
+    .then(function () {
+        append(roll());
+        return sleep(2000);
+    })
+    .then(function () {
+        append(roll());
+        return sleep(2000);
+    })
+    .then(function () {
+        append(roll());
+    });
+}
+
+function sleep(ms) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, ms);
+    });
+}
+
+function b(continuation) {
+    setTimeout(function () {
+        append(roll());
+        setTimeout(function () {
+            append(roll());
+            setTimeout(function () {
+                append(roll());
+                continuation();
+            }, 2000);
+        }, 2000);
+    }, 2000);
+}
+
+function a() {
+    spin(2000);
+    append(roll());
+    spin(2000);
+    append(roll());
+    spin(2000);
+    append(roll());
+}
+
+function spin(ms) {
+    const done = Date.now() + ms;
+    while (Date.now() < done) {
+    }
+}
+
+</script>
+</html>
