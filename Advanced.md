@@ -151,7 +151,10 @@ while ({value: x, done} = generator.next(), !done) {
 ```
 
 > **Exercise:**
-> - Complete the generator function `finiteCounter`:
+> - Complete the generator function `finiteCounter` below
+> - Validate the parameters `from` and `to`
+>   - Exceptions won't be thrown until the first `.next` call
+>   - 🏆 Can you already throw at the `finiteCounter` call?
 
 ```js
 function* finiteCounter(from, to) {
