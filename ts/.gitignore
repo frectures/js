@@ -1,0 +1,9 @@
+# npm install
+/node_modules/
+
+# tsconfig.json
+/out/
+
+# Ignoring package-lock.json is fine for tutorials, but don't do this in real world projects!
+# The whole point of package-lock.json is to ensure that all developers use the same versions.
+/package-lock.json

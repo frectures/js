@@ -1,0 +1,13 @@
+{
+  "include": [
+    "./src/**/*",
+  ],
+  "compilerOptions": {
+    "outDir": "./out",
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.AsyncIterable"],
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noEmitOnError": false,
+  },
+}
