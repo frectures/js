@@ -12,7 +12,19 @@
 
 - Where did those 3 image URLs come from?
 - Study the result of https://xkcd.com/927/info.0.json (and 928 and 926) in the browser
-- Unfortunately, the XKCD server won't allow `fetch("https://xkcd.com/927/info.0.json")` in your JavaScript code
+- Unfortunately `fetch("https://xkcd.com/927/info.0.json")` in your JavaScript code fails
+  - see developer console (F12):
+
+> Access to fetch at 'https://xkcd.com/927/info.0.json' from origin 'null' has been blocked by CORS policy:  
+> No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+- By default, servers only accept requests from *frontend* JavaScript code they served themselves
+  - This is a security feature related to login cookies and malicious websites: https://stackoverflow.com/a/27365516
+  - Obviously, we cannot change the XKCD server settings
+- Solution: Local proxy server between our frontend JavaScript code and the XKCD server
+  - Frontend talks to proxy; proxy talks to XKCD server
+  - This local proxy server could be written in *any* language, including JavaScript
+  - Running JavaScript code outside the browser requires Node.js (or Deno, or Bun)
 
 ### Install Node.js
 
@@ -23,7 +35,7 @@
   - install Node.js from https://nodejs.org/en/download
   - ⚠️ open a new terminal
 
-### Install http-server
+### Install local proxy server
 
 - `cd "projects/02 xkcd"`
 - `http-server -P https://xkcd.com`
