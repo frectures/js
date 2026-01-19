@@ -132,9 +132,9 @@ log(typeof "hello");
 log(typeof "hello"[0]);
 log(typeof undefined);
 log(typeof null);
-log(typeof {});
-log(typeof Math.log);
-log(typeof []);
+log(typeof { name: "Brendan Eich", year: 1961, nerd: true });
+log(typeof Math.sin);
+log(typeof [ 9, 10, 11, 12 ]);
 ```
 
 ![](img/refactoring.jpg)
@@ -244,10 +244,10 @@ function f(value) {
     }
 }
 
-f(42)  // truthy
-f( 0)  // falsy
-f("0") // truthy
-f("")  // falsy
+f(42)   // truthy
+f( 0)   // falsy
+f("0")  // truthy
+f("")   // falsy
 ```
 
 - The following equivalent function explicitly lists all falsy values:
@@ -284,20 +284,16 @@ while (x + 1 > x) {
 }
 
 
-// log all 6 permutations of 3 numbers,
-// inspired by C++ std::next_permutation
+function printDigits(x) {
+    do {
+        log(x % 10);
+        x = Math.floor(x / 10);
+    } while (x);
+}
 
-const numbers = [ 1, 2, 3 ];
-do {
-    log(numbers);
-    [ 1, 2, 3 ]
-    [ 1, 3, 2 ]
-    [ 2, 1, 3 ]
-    [ 2, 3, 1 ]
-    [ 3, 1, 2 ]
-    [ 3, 2, 1 ]
-} while (nextPermutation(numbers));
-    [ 1, 2, 3 ]
+printDigits(123); // 3 2 1
+
+printDigits(0);   // 0  (normal while-loop would print nothing)
 ```
 
 > **Exercise:**
@@ -571,16 +567,17 @@ const twin = JSON.parse(str);          //  { surename: 'Eich', year: 1961 }
 
 ```js
 const primes = [ 2, 3, 5, 7 ];
-typeof primes                      // 'object'
-Object.getOwnPropertyNames(primes) // [ '0', '1', '2', '3', 'length' ]
+typeof primes                       // 'object'
+Object.getOwnPropertyNames(primes)  // [ '0', '1', '2', '3', 'length' ]
 
-primes.length // 4
-primes[0]     // 2
-primes[4]     // undefined
+primes.length  // 4
+primes[0]      // 2
+primes[4]      // undefined
 
 primes[4] = 11;      // [ 2, 3, 5, 7, 11 ]
 primes.push(13);     // [ 2, 3, 5, 7, 11, 13 ]
 primes.push(17, 19); // [ 2, 3, 5, 7, 11, 13, 17, 19 ]
+
 primes[24] = 97;     // [ 2, 3, 5, 7, 11, 13, 17, 19, <16 empty items>, 97 ]
 primes.length = 5;   // [ 2, 3, 5, 7, 11 ]
 primes.pop();        // [ 2, 3, 5, 7 ]
@@ -666,9 +663,9 @@ inventors.sort((a, b) => a.length - b.length);
 ## Promises
 
 ```js
-const url = "https://api.chucknorris.io/jokes/random";
+const URL = "https://api.chucknorris.io/jokes/random";
 
-fetch(url)  // result? blocking/asynchronous?
+fetch(URL)  // result? blocking/asynchronous?
 ```
 
 - Network traffic is slow
@@ -685,8 +682,8 @@ fetch(url)  // result? blocking/asynchronous?
 <td>
 
 ```js
-function f() {
-    return fetch(url)                   // Promise<Response>
+function logRandomJoke() {
+    return fetch(URL)                   // Promise<Response>
     .then(response => response.text())  // Promise<string>
     .then(str      => JSON.parse(str))  // Promise<object>
     .then(joke     => log(joke));       // Promise<undefined>
@@ -697,8 +694,8 @@ function f() {
 <td>
 
 ```js
-async function f() {
-    const response = await fetch(url);      // Response
+async function logRandomJoke() {
+    const response = await fetch(URL);      // Response
     const str      = await response.text(); // string
     const joke     =       JSON.parse(str); // object
     log(joke);                              // undefined
@@ -709,7 +706,7 @@ async function f() {
 </tr>
 </table>
 
-- `fetch(url)` resolves when the response *header* arrives
+- `fetch(URL)` resolves when the response *header* arrives
   - The response *body* may still be downloading
 - `response.text()` resolves when the body is:
   - downloaded
@@ -730,8 +727,8 @@ async function f() {
 <td>
 
 ```js
-function f() {
-    return fetch(url)                   // Promise<Response>
+function logRandomJoke() {
+    return fetch(URL)                   // Promise<Response>
     .then(response => response.json())  // Promise<object>
     .then(joke     => log(joke));       // Promise<undefined>
 }
@@ -741,8 +738,8 @@ function f() {
 <td>
 
 ```js
-async function f() {
-    const response = await fetch(url);       // Response
+async function logRandomJoke() {
+    const response = await fetch(URL);       // Response
     const joke     = await response.json();  // object
     log(joke);                               // undefined
 }
@@ -756,11 +753,28 @@ async function f() {
 
 > **Exercise:**
 > - Fetch all joke categories from `https://api.chucknorris.io/jokes/categories`
+>   - Want spoilers? See “Beginner Template” below
 > - Ignore these controversial categories:
 >   - explicit
 >   - political
 >   - religion
 > - Fetch 1 joke per category from `https://api.chucknorris.io/jokes/random?category=insertCategoryHere`
-> - Log the joke `value`s, sorted alphabetically
-> - 🏆 Sort the jokes by `id` instead
+> - Sort the joke `value`s alphabetically
+> - Sort the joke `value`s by length
 > - 🏆 Fetch the jokes in parallel with [Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
+> - **Beginner Template:**
+```js
+async function fetchJson(url) {
+    const response = await fetch(url);
+    const json     = await response.json();
+    return json;
+}
+
+async function exercise() {
+    const allCategories = await fetchJson("https://api.chucknorris.io/jokes/categories");
+    log(allCategories);
+    // ...
+}
+
+exercise().catch(log); // log async errors
+```
