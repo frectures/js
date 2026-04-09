@@ -227,9 +227,21 @@ function releaseYearOfEcmaScript(version) {
 ```
 
 > **Exercise:**
-> - `releaseYearOfEcmaScript` handles some illegal inputs (such as 0 and 4)
-> - Can you think of more illegal inputs to `releaseYearOfEcmaScript`?
-> - Handle those illegal inputs as you see fit
+> - `releaseYearOfEcmaScript` handles 2 illegal **domain** inputs:
+>   - `releaseYearOfEcmaScript(0)` → `non-positive ECMAScript version 0`
+>   - `releaseYearOfEcmaScript(4)` → `abandoned ECMAScript version 4`
+> - But what about **technically** illegal inputs?
+>   - `releaseYearOfEcmaScript(true)`
+>   - `releaseYearOfEcmaScript(3.14)`
+>   - `releaseYearOfEcmaScript(123n)`
+>   - `releaseYearOfEcmaScript("hello")`
+>   - `releaseYearOfEcmaScript(undefined)`
+>   - `releaseYearOfEcmaScript(null)`
+>   - `releaseYearOfEcmaScript({})`
+>   - `releaseYearOfEcmaScript(Math.sin)`
+>   - `releaseYearOfEcmaScript([])`
+> - What does `releaseYearOfEcmaScript` return for those inputs?
+> - Throw an `Error` instead
 
 ### truthy/falsy values
 
