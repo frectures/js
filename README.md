@@ -243,41 +243,6 @@ function releaseYearOfEcmaScript(version) {
 > - What does `releaseYearOfEcmaScript` return for those inputs?
 > - Throw an `Error` instead
 
-### truthy/falsy values
-
-- Technically, conditions are not restricted to `boolean` values:
-
-```js
-function f(value) {
-    if (value) {
-        return "truthy";
-    } else {
-        return "falsy";
-    }
-}
-
-f(42)   // truthy
-f( 0)   // falsy
-f("0")  // truthy
-f("")   // falsy
-```
-
-- The following equivalent function explicitly lists all falsy values:
-
-```js
-function g(value) {
-    const falsyValues = [ false, NaN, 0, -0, 0n, "", undefined, null ];
-
-    return falsyValues.includes(value) ? "falsy" : "truthy";
-}
-```
-
-- For the sake of maintenance, prefer `boolean` values in conditions
-
-> **Exercise:**
-> - Replace the array in function `g` with a `switch`
-> - Is `g` still equivalent to `f`? Try all falsy values!
-
 ### Loops
 
 ```js
@@ -300,7 +265,7 @@ function printDigits(x) {
     do {
         log(x % 10);
         x = Math.floor(x / 10);
-    } while (x);
+    } while (x !== 0);
 }
 
 printDigits(123); // 3 2 1
@@ -359,8 +324,6 @@ function join(array, separator, prefix, suffix) {
     }
 
     prefix = prefix ?? ""; // replace null or undefined
-
-    suffix = suffix || ""; // replace all falsy values
 
     return prefix + array[0] + separator + array[1] + suffix;
 }
