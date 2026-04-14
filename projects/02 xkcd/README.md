@@ -48,7 +48,9 @@
 - Open `localhost:8080` in the browser
 - In your JavaScript code, `fetch("/927/info.0.json")` instead of the full URL
 - ⚠️ If `fetch` still has CORS issues:
-  - Press `Ctrl F5` to clear cache
+  - Perform a **hard page refresh**:
+    - Windows/Linux: `Ctrl Shift R`
+    - macOS: `Command⌘ Shift R`
   - Open private tab
   - Try different browser
 - Now make the `next` and `prev` buttons work multiple times in a row
