@@ -52,12 +52,9 @@ $ curl --silent      https://api.pwnedpasswords.com/range/ab87d   \
 - The file `index.html` contains scaffolding to get you started
   - including example call of supplied `sha1hex` function
 - Spoilers:
-  - [input type](https://www.w3schools.com/tags/att_input_type.asp), [onclick](https://www.w3schools.com/jsref/event_onclick.asp)
-  - [getElementById](https://www.w3schools.com/jsref/met_document_getelementbyid.asp), [value](https://www.w3schools.com/tags/att_input_value.asp)
-  - [substr](https://www.w3schools.com/jsref/jsref_substr.asp) / [substring](https://www.w3schools.com/jsref/jsref_substring.asp)
+  - [substring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring)
   - [fetch](../../README.md#promises)
-  - [split](https://www.w3schools.com/jsref/jsref_split.asp)
-  - [div](https://www.w3schools.com/tags/tag_div.asp), [innerText](https://www.w3schools.com/jsref/prop_node_innertext.asp)
+  - [split](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
 
 ### History
 

@@ -7,6 +7,10 @@
 
 
 
+<input id="input" type="text" placeholder="password">
+<button onclick="buttonClicked()">click me</button>
+<span id="output">...</span>
+
 
 
 </body>
@@ -14,7 +18,16 @@
 <script>
 
 
-console.log(sha1hex("The quick brown fox jumps over the lazy dog"));
+
+async function buttonClicked() {
+
+    const password = document.getElementById("input").value;
+
+    const hash = sha1hex(password);
+
+    document.getElementById("output").innerText = hash;
+}
+
 
 
 </script>
