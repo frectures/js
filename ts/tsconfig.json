@@ -3,9 +3,12 @@
     "./src/**/*",
   ],
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./out",
+
     "target": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.AsyncIterable"],
+    "lib": ["ESNext", "DOM"],
+
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noEmitOnError": false,
