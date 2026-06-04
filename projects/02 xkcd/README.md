@@ -4,7 +4,7 @@
 
 ### Dummy
 
-- Write a web application that simply displays the image https://imgs.xkcd.com/comics/standards.png
+- The provided `index.html` displays the image https://imgs.xkcd.com/comics/standards.png
 - Add a `next` button that changes the image to https://imgs.xkcd.com/comics/mimic_octopus.png
 - Add a `prev` button that changes the image to https://imgs.xkcd.com/comics/time_vulture.png
 
