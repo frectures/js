@@ -179,25 +179,32 @@ const json = await response.json() as Joke;
   - `Property 'fred' does not exist on type 'Joke'`
 
 > **Exercise:**
+> - This exercise builts upon the [Modules](../Advanced.md#Modules) exercise
+>   - Did you solve it *today*?
+>   - Is the web server `http://localhost:8080` still running?
+>   - Then stop that web server!
 > - Convert `projects/01 password` from JavaScript to TypeScript:
 >   - Copy `.js` files from `projects/01 password/` to `ts/src/`
 >   - Rename the new `.js` files to `.ts`
 >   - Copy `index.html` from `projects/01 password/` to `ts/`
 >   - Change import from `"./index.js"` to `"./out/index.js"`
 > - Open a terminal inside the `ts/` folder
-> - Run `npm install` to install the TypeScript compiler
-> - Run `npx tsc --watch` to start the TypeScript compiler
+>   - Run `npm install` to install the TypeScript compiler
+>   - Run `npx tsc --watch` to start the TypeScript compiler
 >   - The compiler will report lots of missing types
->   - But `localhost:8080` should still work
 > - Add the missing types inside `sha1.ts`:
->   - `function sha1hex(str: string): string`
+>   - Since you already used `function sha1hex(str)`, you should know the types
 >   - `function rotateLeft(x: number, n: number): number`
 >   - `function hex32(x: number): string`
+>   - Can you deduce the type of `position` from its usage in the same line?
 > - Add the missing types inside `index.ts`
-> - All `document.getElementById("...").property` accesses are problematic
+>   - All `document.getElementById("...").property` accesses are problematic
 >   - because the compiler cannot possibly know whether those elements will exist (and what properties they will have)
->   - Fix `Property 'value' does not exist on type 'HTMLElement'` by casting: `(document.getElementById("textInput") as HTMLInputElement).value`
->   - Fix `Object is possibly 'null'` with an exclamation mark: `document.getElementById("textInput")!.onkeyup`
+>   - Fix `Object is possibly 'null'` with an exclamation mark: `document.getElementById("...")!.property`
+>   - Fix `Property 'value' does not exist on type 'HTMLElement'` by casting: `(document.getElementById("...") as HTMLInputElement).value`
+> - Open *another* terminal inside the `ts/` folder
+>   - Run `http-server`, or any other local web server
+>   - Open `http://localhost:8080` in the browser
 
 ### Generics
 
