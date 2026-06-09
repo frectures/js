@@ -211,6 +211,11 @@ function f() {
 
 ```js
 function releaseYearOfEcmaScript(version) {
+    
+    if (typeof version !== "number") throw new Error(`version must be number, not ${typeof version}`);
+    
+    if (!Number.isInteger(version)) throw new Error(`version must be integer, not fraction`);
+    
     if (version < 1) throw new Error(`non-positive ECMAScript version ${version}`);
     //               /////
     switch (version) {
@@ -225,23 +230,6 @@ function releaseYearOfEcmaScript(version) {
     }            //////                  ///       ///
 }
 ```
-
-> **Exercise:**
-> - `releaseYearOfEcmaScript` handles 2 illegal **domain** inputs:
->   - `releaseYearOfEcmaScript(0)` → `non-positive ECMAScript version 0`
->   - `releaseYearOfEcmaScript(4)` → `abandoned ECMAScript version 4`
-> - But what about **technically** illegal inputs?
->   - `releaseYearOfEcmaScript(true)`
->   - `releaseYearOfEcmaScript(3.14)`
->   - `releaseYearOfEcmaScript(123n)`
->   - `releaseYearOfEcmaScript("hello")`
->   - `releaseYearOfEcmaScript(undefined)`
->   - `releaseYearOfEcmaScript(null)`
->   - `releaseYearOfEcmaScript({})`
->   - `releaseYearOfEcmaScript(Math.sin)`
->   - `releaseYearOfEcmaScript([])`
-> - What does `releaseYearOfEcmaScript` return for those inputs?
-> - Throw an `Error` instead
 
 ### Loops
 
