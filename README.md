@@ -327,62 +327,6 @@ function join(array, separator = ", ", prefix = "", suffix = "") {
 }
 ```
 
-### Named arguments
-
-- JavaScript does not have named arguments
-- But object literals `{ key: value, }` work just fine:
-
-```js
-function join(array, options) {
-
-    return options.prefix + array[0] + options.separator + array[1] + options.suffix;
-}
-
-join(treats,
-{
-    prefix:    "Yummy: ",
-    separator: " and ",
-    suffix:    "!",
-}); ///////////////
-```
-
-- The `join` signature does not reveal the available options
-- Accessing every option with `options.` is quite cumbersome
-- Mitigate both problems with *destructuring*:
-
-```js
-                     /////////////////////////////
-function join(array, { prefix, separator, suffix }) {
-
-    return prefix + array[0] + separator + array[1] + suffix;
-}
-
-join(treats,
-{
-    prefix:    "Yummy: ",
-    separator: " and ",
-    suffix:    "!",
-});
-```
-
-- Default values must be handled manually:
-
-```js
-function join(array, { prefix, separator, suffix }) {
-
-    prefix    = prefix    ?? "";
-    separator = separator ?? ", ";
-    suffix    = suffix    ?? "";
-
-    return prefix + array[0] + separator + array[1] + suffix;
-}
-
-join(treats,
-{
-    separator: " and ",
-});
-```
-
 > **Exercise:**
 > - So far, `join` always joins 2 array elements
 >   - Fix `join` so it joins `array.length` elements
