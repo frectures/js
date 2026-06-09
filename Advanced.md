@@ -341,21 +341,7 @@ a.deposit(23);
 a.getBalance()     // 123
 ```
 
-### What is `Account`, really?
-
-```js
-a  instanceof     Account      // true... Is Account a class?
-
-a.constructor === Account      // true... Is Account a constructor?
-
-           typeof Account      // "function"... It's a function!
-
-                  Account(42)  // TypeError: class constructors must be invoked with 'new'
-
-              new Account(42); // { balance: 42 }
-```
-
-### But where are the methods?
+### Where are the methods?
 
 ```js
       a            // { balance: 123 }
