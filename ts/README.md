@@ -64,42 +64,31 @@ C:\Users\fred\git\js\ts> npm install
   - `never` (function always `throw`s exception, see below)
 
 ```ts
-let l; // l: any
+function interviewQuestion(strings: string[]): string {
+    // return "";
+    // throw new Error("not implemented yet");
 
-if (x >= 0) {
-    l = Math.sqrt(x);
-} else {
-    throw new Error("TODO: handle negative numbers");
-}
-    l; // l: number
-```
+    TODO();
 
-```ts
-const c = (x >= 0) ? Math.sqrt(x) : throw new Error("TODO: handle negative numbers");
-                                    /////
-                                    // expression expected
-```
-
-```ts
-function TODO(message: string): void {
-                                ////
-    throw new Error(`TODO: ${message}`);
+    // function [...] must return a value
 }
 
-const v = (x >= 0) ? Math.sqrt(x) : TODO("handle negative numbers");
-
-      v; // v: number | void
+function TODO(): void {
+    throw new Error("not implemented yet");
+}
 ```
 
+- `void` means “returns normally, without a result”
+- `never` means “always throws an exception”:
+
 ```ts
-function TODO(message: string): never {
-                                /////
-    throw new Error(`TODO: ${message}`);
+function TODO(): never {
+    throw new Error("not implemented yet");
 }
 
-const n = (x >= 0) ? Math.sqrt(x) : TODO("handle negative numbers");
-
-      n; // n: number
+function interviewQuestion(strings: string[]): string {
+    TODO();
+}
 ```
 
 ### Union types
