@@ -450,17 +450,6 @@ a.__proto__ = SavingsAccount.prototype;
 - 🕷️ With great power comes great responsibility
 - 🕵️ Quite useful for testing (mock, spy)
 
-### What's `this` inside functions?
-
-| Function call syntax      | `this` value                 |
-| ------------------------- | ---------------------------- |
-| `f(x, y, z)`              | `undefined` or global object |
-| `obj.f(x, y, z)`          | `obj`                        |
-| `new F(x, y, z)`          | `{ __proto__: F.prototype }` |
-| `f.apply(obj, [x, y, z])` | `obj`                        |
-| `f.call(obj, x, y, z)`    | `obj`                        |
-| `f.bind(obj, x)(y, z)`    | `obj`                        |
-
 ### Polyfills
 
 - Since ES2023, arrays have a `toSorted` method:

@@ -284,3 +284,14 @@ class Account {
   - Arrow functions `() => {}` do
 - Uncalled methods `obj.method` do not bind `this` to `obj`
   - Bound methods `obj.method.bind(obj)` do
+
+### What's `this` inside functions?
+
+| Function call syntax      | `this` value                 |
+| ------------------------- | ---------------------------- |
+| `f(x, y, z)`              | `undefined` or global object |
+| `obj.f(x, y, z)`          | `obj`                        |
+| `new F(x, y, z)`          | `{ __proto__: F.prototype }` |
+| `f.apply(obj, [x, y, z])` | `obj`                        |
+| `f.call(obj, x, y, z)`    | `obj`                        |
+| `f.bind(obj, x)(y, z)`    | `obj`                        |
