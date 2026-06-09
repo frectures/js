@@ -525,38 +525,26 @@ primes.forEach(function (value, index, array) {
 
 ### Sorting
 
-- `array.sort()` sorts the elements by their `toString` value:
-
-```js
-const primes = [ 11, 2, 3, 13, 5, 7, 17, 19 ];
-
-primes.sort();
-
-               [ 11, 13, 17, 19, 2, 3, 5, 7 ]
-```
-
-- `array.sort(compare)` sorts the elements according to `compare`:
-
-```js
-primes.sort((a, b) => a - b);
-
-               [ 2, 3, 5, 7, 11, 13, 17, 19 ]
-
-primes.sort((a, b) => b - a);
-
-               [ 19, 17, 13, 11, 7, 5, 3, 2 ]
-```
-
-| `compare(a, b)` | Order                      |
-| --------------- | -------------------------- |
-| negative        | `a` belongs *before* `b`   |
-| positive        | `a` belongs *after* `b`    |
-| zero            | `a` is *equivalent* to `b` |
+- Sort strings alphabetically:
 
 ```js
 const inventors = ["Guido", "Bjarne", "James", "Brendan", "Anders"];
 
-inventors.sort((a, b) => a.length - b.length);
+inventors.sort( );
+
+["Anders",
+ "Bjarne",
+ "Brendan",
+ "Guido",
+ "James"]
+```
+
+- Sort strings by length:
+
+```js
+const inventors = ["Guido", "Bjarne", "James", "Brendan", "Anders"];
+
+inventors.sort( (a, b) => a.length - b.length );
 
 ["Guido",
  "James",
@@ -564,6 +552,12 @@ inventors.sort((a, b) => a.length - b.length);
  "Anders",
  "Brendan"]
 ```
+
+| `(a, b) => ...` | Order                      |
+| --------------- | -------------------------- |
+| negative        | `a` belongs *before* `b`   |
+| positive        | `a` belongs *after* `b`    |
+| zero            | `a` is *equivalent* to `b` |
 
 - Since ES2019, equivalent elements retain their order
 
