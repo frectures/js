@@ -22,7 +22,7 @@ $ curl --silent https://api.pwnedpasswords.com/range/ab87d
 006C09B0516629D89D177C5071BEEFC00C9:1
 ...
 24788C6BFF67541DFAF37770C4514552452:2
-24BDC7452E55738DEB5F868E1F16DEA5ACE:1501976
+24BDC7452E55738DEB5F868E1F16DEA5ACE:3963423
 24CD2A4C020D50F4D3DCCCAB1369769B8C6:1
 ...
 FF239B2C5818BBD179B440F51A5A28462B2:2
@@ -36,11 +36,11 @@ FF4C592C08155C34FDD9353B37B3A51602F:32
 $ curl --silent      https://api.pwnedpasswords.com/range/ab87d   \
 | grep --ignore-case 24bdc7452e55738deb5f868e1f16dea5ace
 
-24BDC7452E55738DEB5F868E1F16DEA5ACE:1501976
+24BDC7452E55738DEB5F868E1F16DEA5ACE:3963423
                                     ^^^^^^^
 ```
 
-- i.e. `1501976` exposed accounts probably use `monkey` password
+- i.e. `3963423` exposed accounts probably use `monkey` password
 - But who wants to type `echo`, `sha1sum`, `curl`, `grep` manually?
 
 ### MVP
@@ -51,24 +51,24 @@ $ curl --silent      https://api.pwnedpasswords.com/range/ab87d   \
   - Display how many exposed accounts use that password
 - The file `index.html` contains scaffolding to get you started
   - including example call of supplied `sha1hex` function
-- Spoilers:
-  - [substring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring)
-  - [fetch](../../README.md#promises)
-  - [split](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
 
 ### History
 
 - Instead of showing only the result for the most recently entered password, can you show a complete history?
+  1. **for now:** as a simple, multi-line string
+  2. 🏆 **later:** as a [table](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/table)
 - Sort the history
+  1. **for now:** by a fixed criterion you consider useful
+  2. 🏆 **later:** the user can pick any criterion
 - What happens (should happen) if the user enters the same passwort multiple times?
 
 ### Usability
 
 - Instead of clicking the button, pressing Enter in the text field should also work
 - Automatically fire a request 2 seconds after every change to the text field
-  - [setTimeout](https://www.w3schools.com/jsref/met_win_settimeout.asp)
+  - [setTimeout](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout)
 - If the user types another symbol within the 2 seconds, cancel the prior request
-  - [clearTimeout](https://www.w3schools.com/jsref/met_win_cleartimeout.asp)
+  - [clearTimeout](https://developer.mozilla.org/en-US/docs/Web/API/Window/clearTimeout)
 
 ### Caching
 
@@ -84,63 +84,3 @@ $ curl --silent      https://api.pwnedpasswords.com/range/ab87d   \
   - `scavenge` should fire a request
   - `brixton` should not
   - `minkster` should not
-
-### 🏆 Body chunks
-
-- Is it **Noon** already?
-  - Then skip to `projects/02 xkcd` now!
-- api.pwnedpasswords.com sends large response bodies
-  - Decoding after the hash of interest seems wasteful
-- Response bodies can be decoded in chunks
-  - This makes the code *much* more complex
-  - **not** worth the tradeoff in practice!
-- Still interesting and fun, though:
-
-```js
-const response = await fetch(url);
-let count = 0;
-
-for await (const chunk of response.body.pipeThrough(new TextDecoderStream("utf-8"))) {
-
-    log(++count, chunk.length, chunk.substring(0, 10)); // Observe the logs carefully!
-
-    // ...
-    if (hashFound) {
-        // ...
-        return numberAfterColon; // stop decoding
-    }
-}
-```
-
-- ⚠️ Chunks can end in the middle of a line!
-  - Why is that a problem?
-  - How do you solve it?
-- Much harder without `async`/`await` btw:
-
-```js
-return fetch(url).then(response => {
-    let count = 0;
-
-    const reader = response.body.pipeThrough(new TextDecoderStream("utf-8")).getReader();
-
-    function step() {
-        return reader.read().then(status => {
-            if (!status.done) {
-                const chunk = status.value;
-
-                log(++count, chunk.length, chunk.substring(0, 10)); // Observe the logs carefully!
-
-                // ...
-                if (hashFound) {
-                    // ...
-                    return numberAfterColon; // stop decoding
-                } else {
-                    return step();       // continue decoding
-                }
-            }
-        });
-    }
-
-    return step();
-});
-```
