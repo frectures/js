@@ -564,9 +564,9 @@ inventors.sort( (a, b) => a.length - b.length );
 ## Promises
 
 ```js
-const URL = "https://api.chucknorris.io/jokes/random";
+const url = "https://api.chucknorris.io/jokes/random";
 
-fetch(URL)  // result? blocking/asynchronous?
+fetch(url)  // result? blocking/asynchronous?
 ```
 
 - Network traffic is slow
@@ -584,7 +584,7 @@ fetch(URL)  // result? blocking/asynchronous?
 
 ```js
 function logRandomJoke() {
-    return fetch(URL)                   // Promise<Response>
+    return fetch(url)                   // Promise<Response>
     .then(response => response.text())  // Promise<string>
     .then(str      => JSON.parse(str))  // Promise<object>
     .then(joke     => log(joke));       // Promise<undefined>
@@ -596,7 +596,7 @@ function logRandomJoke() {
 
 ```js
 async function logRandomJoke() {
-    const response = await fetch(URL);      // Response
+    const response = await fetch(url);      // Response
     const str      = await response.text(); // string
     const joke     =       JSON.parse(str); // object
     log(joke);                              // undefined
@@ -607,7 +607,7 @@ async function logRandomJoke() {
 </tr>
 </table>
 
-- `fetch(URL)` resolves when the response *header* arrives
+- `fetch(url)` resolves when the response *header* arrives
   - The response *body* may still be downloading
 - `response.text()` resolves when the body is:
   - downloaded
@@ -629,7 +629,7 @@ async function logRandomJoke() {
 
 ```js
 function logRandomJoke() {
-    return fetch(URL)                   // Promise<Response>
+    return fetch(url)                   // Promise<Response>
     .then(response => response.json())  // Promise<object>
     .then(joke     => log(joke));       // Promise<undefined>
 }
@@ -640,7 +640,7 @@ function logRandomJoke() {
 
 ```js
 async function logRandomJoke() {
-    const response = await fetch(URL);       // Response
+    const response = await fetch(url);       // Response
     const joke     = await response.json();  // object
     log(joke);                               // undefined
 }
